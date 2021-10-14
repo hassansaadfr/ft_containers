@@ -1,0 +1,29 @@
+{
+	"files.associations": {
+		"*.c": "c",
+		"*.ts": "typescript",
+		"atomic": "cpp",
+		"*.tcc": "cpp",
+		"deque": "cpp",
+		"string": "cpp",
+		"unordered_map": "cpp",
+		"vector": "cpp",
+		"iterator": "cpp",
+		"memory_resource": "cpp",
+		"optional": "cpp",
+		"string_view": "cpp",
+		"fstream": "cpp",
+		"istream": "cpp",
+		"ostream": "cpp",
+		"sstream": "cpp",
+		"streambuf": "cpp",
+		"system_error": "cpp",
+		"functional": "cpp",
+		"tuple": "cpp",
+		"new": "cpp",
+		"stdexcept": "cpp",
+		"iosfwd": "cpp",
+		"cstddef": "cpp",
+		"memory": "cpp"
+	}
+}
