@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <memory>
+# include "Iterator.hpp"
 
 namespace ft {
 	template < class T, class Alloc = std::allocator<T> >
@@ -15,6 +16,8 @@ namespace ft {
 			typedef typename allocator_type::const_reference	const_reference	;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
+
+			typedef Iterator<T>									iterator;
 
 			Vector(void);
 			~Vector(void);
