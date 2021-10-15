@@ -2,27 +2,29 @@
 # define ITERATOR_H
 
 # include <iostream>
+# include <cstddef>
+# include "Utils.hpp"
 
 namespace ft {
 	template< class Iter >
 	struct iterator_traits
 	{
-		typedef typename Iter::difference_type		difference_type;
-		typedef typename Iter::value_type			value_type;
-		typedef typename Iter::pointer				pointer;
-		typedef typename Iter::reference			reference;
-		typedef typename Iter::iterator_category	iterator_category;
+		typedef typename Iter::difference_type														difference_type;
+		typedef typename Iter::value_type															value_type;
+		typedef typename Iter::pointer																pointer;
+		typedef typename Iter::reference															reference;
+		typedef typename Iter::iterator_category													iterator_category;
 	};
 
-	template <typename T>
+	template <typename T, bool is_constant>
 	class Iterator
 	{
 		public:
-			typedef ptrdiff_t						difference_type;
-			typedef T								value_type;
-			typedef value_type *					pointer;
-			typedef value_type &					reference;
-			typedef std::random_access_iterator_tag	iterator_category;
+			typedef ptrdiff_t																		difference_type;
+			typedef T																				value_type;
+			typedef typename ft::is_constant<is_constant, const value_type *, value_type *>::type	pointer;
+			typedef typename ft::is_constant<is_constant, const value_type &, value_type &>::type	reference;
+			typedef std::random_access_iterator_tag													iterator_category;
 			/* Constructor */
 			Iterator(void) {};
 			Iterator(pointer ptr): _ptr(ptr) {};

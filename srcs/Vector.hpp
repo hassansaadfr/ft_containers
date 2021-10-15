@@ -17,7 +17,8 @@ namespace ft {
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 
-			typedef Iterator<T>									iterator;
+			typedef Iterator<T, false>							iterator;
+			typedef Iterator<T, true>							const_iterator;
 
 			Vector(void);
 			~Vector(void);
@@ -25,8 +26,6 @@ namespace ft {
 
 			Vector&		operator=(Vector const &src);
 	};
-
-	// std::ostream &		operator<<(std::ostream &o, Vector const &src);
 }
 
 #endif

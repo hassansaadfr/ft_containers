@@ -1,10 +1,14 @@
-#include "Vector.hpp"
+#include "Exo.hpp"
 #include <vector>
+
 int main(void)
 {
-	std::vector<int> vect(10);
+	int a = 42;
+	foo<int> b;
+	foo<int*> z;
 
-	std::vector<int>::iterator it = vect.begin();
-
+	test(b);
+	test(z);
+	(void)a;
 	return 0;
 }
