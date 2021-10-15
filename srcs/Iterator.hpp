@@ -1,6 +1,8 @@
 #ifndef ITERATOR_H
 # define ITERATOR_H
 
+# include <iostream>
+
 namespace ft {
 	template< class Iter >
 	struct iterator_traits
