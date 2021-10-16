@@ -3,28 +3,88 @@
 
 # include <iostream>
 # include <memory>
+# include <limits>
+# include <iterator>
 # include "Iterator.hpp"
 
 namespace ft {
-	template < class T, class Alloc = std::allocator<T> >
+	template < class T, class Allocator = std::allocator<T> >
 	class Vector
 	{
 		public:
 			typedef T 											value_type;
-			typedef Alloc										allocator_type;
+			typedef Allocator									allocator_type;
 			typedef typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference	;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-
 			typedef Iterator<T, false>							iterator;
 			typedef Iterator<T, true>							const_iterator;
+			// typedef Iterator<T, true>							reverse_iterator;
+			// typedef Iterator<T, true>							const_reverse_iterator;
+			typedef ptrdiff_t									difference_type;
+			typedef size_t										size_type;
+
 
 			Vector(void);
-			~Vector(void);
+			explicit Vector (size_type n, const value_type& value = value_type(),
+				const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc), _ptr(NULL)
+			{
+				assign(n, value);
+			};
+			explicit Vector (const allocator_type& alloc = allocator_type());
+
+			template <class InputIterator>
+			Vector (InputIterator first, InputIterator last,
+				const allocator_type& alloc = allocator_type());
 			Vector(Vector const &src);
 
+			~Vector(void);
 			Vector&		operator=(Vector const &src);
+
+			/* Modifiers */
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last)
+			{
+				_clear_alloc(std::distance(first, last));
+				_size = distance;
+				_capacity = distance;
+				while (first != last)
+				{
+					_alloc.construct(&_ptr[_size], *first);
+					first++;
+				}
+			}
+
+			void assign (size_type n, const value_type& val)
+			{
+				_clear_alloc(n);
+				_size = n;
+				_capacity = n;
+				for (size_type i = 0; i < n; i++)
+					_alloc.construct(&_ptr[_size], val);
+			}
+
+			/* Member functions */
+			size_type		size() const { return _size; };
+			size_type		max_size() const { return std::numeric_limits<difference_type>::max(); };
+			size_type		capacity() const { return _capacity; };
+			bool			empty() const { return _size == 0; };
+			allocator_type	get_allocator() const { return (std::numeric_limits<difference_type>::max()); };
+		private:
+			pointer			_ptr;
+			size_type		_size;
+			size_type		_capacity;
+			allocator_type	_alloc;
+
+			void	_clear_alloc(size_type n)
+			{
+				_alloc.deallocate(_ptr, n);
+				for (size_t i = 0; i < n; i++)
+					_alloc.destroy(_ptr[i]);
+				_capacity = 0;
+				_size = 0;
+			}
 	};
 }
 
