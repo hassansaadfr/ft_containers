@@ -26,17 +26,21 @@ namespace ft {
 			typedef size_t										size_type;
 
 
-			Vector(void);
+			Vector(void): _size(0), _capacity(0), _alloc(allocator_type()), _ptr(NULL)
+			{};
+			explicit Vector (const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc), _ptr(NULL)
+			{};
 			explicit Vector (size_type n, const value_type& value = value_type(),
 				const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc), _ptr(NULL)
-			{
-				assign(n, value);
-			};
-			explicit Vector (const allocator_type& alloc = allocator_type());
+			{ assign(n, value); };
 
 			template <class InputIterator>
 			Vector (InputIterator first, InputIterator last,
-				const allocator_type& alloc = allocator_type());
+				const allocator_type& alloc = allocator_type()): _alloc(alloc)
+			{
+				assign(first, last);
+			};
+
 			Vector(Vector const &src);
 
 			~Vector(void);
@@ -46,7 +50,10 @@ namespace ft {
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last)
 			{
-				_clear_alloc(std::distance(first, last));
+				difference_type distance;
+
+				distance = std::distance(first, last);
+				_clear_alloc(distance);
 				_size = distance;
 				_capacity = distance;
 				while (first != last)
