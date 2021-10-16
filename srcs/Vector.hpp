@@ -72,12 +72,33 @@ namespace ft {
 					_alloc.construct(&_ptr[_size], val);
 			}
 
+			/* Iterators */
+			iterator		begin() { return iterator(_ptr); };
+			const_iterator	begin() const { return iterator(_ptr); };
+			iterator		end() { return iterator(_ptr + _size); };
+			const_iterator	end() const { return iterator(_ptr + _size); };
+			// iterator		rbegin() { return iterator(_ptr); };
+			// const_iterator	rbegin() const { return iterator(_ptr); };
+			// iterator		rend() { return iterator(_ptr + _size); };
+			// const_iterator	rend() const { return iterator(_ptr + _size); };
+
+			/* Element access */
+			reference		operator[](size_type n) { return _ptr[n]; };
+			const_reference operator[](size_type n) const { return _ptr[n]; };
+			reference		at(size_type n) { return _ptr[n]; };
+			const_reference	at(size_type n) const { return _ptr[n]; };
+			reference		front() { return _ptr; };
+			const_reference	front() const { return _ptr; };
+			reference		back() { return _ptr[_size - 1]; };
+			const_reference	back() const { return _ptr[_size - 1]; };
+
 			/* Member functions */
 			size_type		size() const { return _size; };
 			size_type		max_size() const { return std::numeric_limits<difference_type>::max(); };
 			size_type		capacity() const { return _capacity; };
 			bool			empty() const { return _size == 0; };
 			allocator_type	get_allocator() const { return (std::numeric_limits<difference_type>::max()); };
+
 		private:
 			pointer			_ptr;
 			size_type		_size;
@@ -86,7 +107,6 @@ namespace ft {
 
 			void	_clear_alloc(size_type n)
 			{
-				_alloc.deallocate(_ptr, n);
 				for (size_t i = 0; i < n; i++)
 					_alloc.destroy(_ptr[i]);
 				_capacity = 0;
