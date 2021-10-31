@@ -25,31 +25,30 @@ namespace ft {
 			typedef typename ft::is_constant<is_constant, const value_type *, value_type *>::type	pointer;
 			typedef typename ft::is_constant<is_constant, const value_type &, value_type &>::type	reference;
 			typedef std::random_access_iterator_tag													iterator_category;
+
 			/* Constructor */
 			Iterator(void) {};
 			Iterator(pointer ptr): _ptr(ptr) {};
 			/* Destructor */
 			~Iterator(void) {};
 			/* Copy constructor */
-			Iterator(Iterator const &src)
-			{
-				this->_ptr = src->_ptr;
-			}
+			Iterator(Iterator const &src): _ptr(src._ptr) {};
+
 			/* Copy Assignation constructor */
 			Iterator&		operator=(Iterator const &rhs)
 			{
-				if (this != rhs)
-					this->_ptr = rhs->_ptr;
+				if (this != &rhs)
+					this->_ptr = rhs._ptr;
 				return *this;
 			}
 
 			/* Comparaisons Part */
-			bool					operator==(Iterator const &rhs) { return (_ptr == rhs->_ptr); };
-			bool					operator!=(Iterator const &rhs) { return (_ptr == rhs->_ptr); };
-			bool					operator<(Iterator const &rhs) { return (_ptr < rhs->_ptr); };
-			bool					operator>(Iterator const &rhs) { return (_ptr > rhs->_ptr); };
-			bool					operator<=(Iterator const &rhs) { return (_ptr <= rhs->_ptr); };
-			bool					operator>=(Iterator const &rhs) { return (_ptr >= rhs->_ptr); };
+			bool					operator==(Iterator const &rhs) { return (_ptr == rhs._ptr); };
+			bool					operator!=(Iterator const &rhs) { return (_ptr != rhs._ptr); };
+			bool					operator<(Iterator const &rhs) { return (_ptr < rhs._ptr); };
+			bool					operator>(Iterator const &rhs) { return (_ptr > rhs._ptr); };
+			bool					operator<=(Iterator const &rhs) { return (_ptr <= rhs._ptr); };
+			bool					operator>=(Iterator const &rhs) { return (_ptr >= rhs._ptr); };
 
 			/* Increment Decrement Part */
 			Iterator&	operator++(void)
@@ -75,54 +74,46 @@ namespace ft {
 				return old;
 			}
 
+			reference	operator*(void) const { return *_ptr; }
 			/* Arithmetic operations */
-			Iterator&	operator+(int const &rhs)
+			Iterator	operator+(difference_type rhs)
 			{
-				_ptr = _ptr + rhs;
-				return *this;
+				return Iterator(_ptr + rhs);
 			}
-			Iterator&	operator+(Iterator const &rhs)
+			difference_type	operator+(Iterator const &rhs)
 			{
-				_ptr = _ptr + rhs._ptr;
-				return *this;
+				return _ptr + rhs._ptr;
 			}
-			Iterator&	operator-(int const &rhs)
+			Iterator	operator-(difference_type rhs)
 			{
-				_ptr = _ptr - rhs;
-				return *this;
+				return Iterator(_ptr - rhs);
 			}
-			Iterator&	operator-(Iterator const &rhs)
+			difference_type	operator-(Iterator const &rhs)
 			{
-				_ptr = _ptr - rhs._ptr;
-				return *this;
+				return _ptr - rhs._ptr;
 			}
 			/* Compound assignement arithmetics operations */
-			Iterator&	operator+=(int const &rhs)
+			Iterator&	operator+=(difference_type rhs)
 			{
-				_ptr = _ptr + rhs;
-				return *this;
+				return Iterator(_ptr + rhs);
 			}
-			Iterator&	operator+=(Iterator const &rhs)
+			difference_type	operator+=(Iterator const &rhs)
 			{
-				_ptr = _ptr + rhs._ptr;
-				return *this;
+				return _ptr + rhs._ptr;
 			}
-			Iterator&	operator-=(int const &rhs)
+			Iterator&	operator-=(difference_type rhs)
 			{
-				_ptr = _ptr - rhs;
-				return *this;
+				return Iterator(_ptr - rhs);
 			}
-			Iterator&	operator-=(Iterator const &rhs)
+			difference_type	operator-=(Iterator const &rhs)
 			{
-				_ptr = _ptr - rhs._ptr;
-				return *this;
+				return _ptr - rhs._ptr;
 			}
 
 			/* Offset dereference operator */
-			Iterator&	operator[](int const &rhs)
+			reference	operator[](difference_type rhs)
 			{
-				_ptr = _ptr + rhs;
-				return *this;
+				return *(_ptr + rhs);
 			}
 		private:
 			pointer	_ptr;
