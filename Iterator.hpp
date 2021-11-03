@@ -5,7 +5,15 @@
 # include <cstddef>
 # include "Utils.hpp"
 
+#ifndef REVERSE_INCLUDE
+ #define REVERSE_INCLUDE
+ #include "ReverseIterator.hpp"
+#endif
+
 namespace ft {
+	template < class T, bool B >
+	class ReverseIterator;
+
 	template< class Iter >
 	struct iterator_traits
 	{
@@ -20,35 +28,39 @@ namespace ft {
 	class Iterator
 	{
 		public:
-			typedef ptrdiff_t																		difference_type;
+			typedef std::ptrdiff_t																	difference_type;
 			typedef T																				value_type;
 			typedef typename ft::is_constant<is_constant, const value_type *, value_type *>::type	pointer;
 			typedef typename ft::is_constant<is_constant, const value_type &, value_type &>::type	reference;
 			typedef std::random_access_iterator_tag													iterator_category;
 
 			/* Constructor */
-			Iterator(void) {};
-			Iterator(pointer ptr): _ptr(ptr) {};
+			Iterator(pointer ptr = 0): _ptr(ptr) {};
 			/* Destructor */
 			~Iterator(void) {};
 			/* Copy constructor */
-			Iterator(Iterator const &src): _ptr(src._ptr) {};
+			template < bool is_const >
+			Iterator(const Iterator<T, is_const> & rhs)
+			{
+				this->_ptr = rhs.base();
+			}
+			// explicit Iterator(const ReverseIterator<T, false> & rhs): _ptr(rhs.base()) {}
 
 			/* Copy Assignation constructor */
-			Iterator&		operator=(Iterator const &rhs)
+			reference		operator=(reference rhs)
 			{
 				if (this != &rhs)
-					this->_ptr = rhs._ptr;
+					this->_ptr = rhs.base();
 				return *this;
 			}
 
 			/* Comparaisons Part */
-			bool					operator==(Iterator const &rhs) { return (_ptr == rhs._ptr); };
-			bool					operator!=(Iterator const &rhs) { return (_ptr != rhs._ptr); };
-			bool					operator<(Iterator const &rhs) { return (_ptr < rhs._ptr); };
-			bool					operator>(Iterator const &rhs) { return (_ptr > rhs._ptr); };
-			bool					operator<=(Iterator const &rhs) { return (_ptr <= rhs._ptr); };
-			bool					operator>=(Iterator const &rhs) { return (_ptr >= rhs._ptr); };
+			bool					operator==(Iterator const &rhs) const { return (_ptr == rhs._ptr); };
+			bool 					operator!=(Iterator const &rhs) const { return (rhs._ptr != _ptr); }
+			bool					operator<(Iterator const &rhs) const { return (_ptr < rhs._ptr); };
+			bool					operator>(Iterator const &rhs) const { return (_ptr > rhs._ptr); };
+			bool					operator<=(Iterator const &rhs) const { return (_ptr <= rhs._ptr); };
+			bool					operator>=(Iterator const &rhs) const { return (_ptr >= rhs._ptr); };
 
 			/* Increment Decrement Part */
 			Iterator&	operator++(void)
@@ -74,15 +86,12 @@ namespace ft {
 				return old;
 			}
 
-			reference	operator*(void) const { return *_ptr; }
+			reference operator*(void) const { return *_ptr; }
+			pointer operator->(void) const { return _ptr; }
 			/* Arithmetic operations */
-			Iterator	operator+(difference_type rhs)
+			Iterator	operator+(difference_type const &rhs) const
 			{
 				return Iterator(_ptr + rhs);
-			}
-			difference_type	operator+(Iterator const &rhs)
-			{
-				return _ptr + rhs._ptr;
 			}
 			Iterator	operator-(difference_type rhs)
 			{
@@ -93,32 +102,46 @@ namespace ft {
 				return _ptr - rhs._ptr;
 			}
 			/* Compound assignement arithmetics operations */
-			Iterator&	operator+=(difference_type rhs)
+			Iterator&		operator+=(difference_type const &rhs)
 			{
-				return Iterator(_ptr + rhs);
-			}
-			difference_type	operator+=(Iterator const &rhs)
-			{
-				return _ptr + rhs._ptr;
-			}
-			Iterator&	operator-=(difference_type rhs)
-			{
-				return Iterator(_ptr - rhs);
-			}
-			difference_type	operator-=(Iterator const &rhs)
-			{
-				return _ptr - rhs._ptr;
+				_ptr += rhs;
+				return *(this);
 			}
 
+			Iterator&	operator-=(difference_type rhs)
+			{
+				_ptr -= rhs;
+				return *this;
+			}
 			/* Offset dereference operator */
 			reference	operator[](difference_type rhs)
 			{
 				return *(_ptr + rhs);
 			}
+
+			pointer base(void) const { return _ptr; };
 		private:
 			pointer	_ptr;
 	};
-
 }
 
+template<typename T>
+ft::Iterator<T, false> operator+(int offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() + offset)); }
+template<typename T>
+ft::Iterator<T, false> operator-(int offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() - offset)); }
+
+template <typename T>
+bool operator!=(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return lhs.base() != rhs.base(); }
+
+
+template <typename T>
+bool					operator==(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() == rhs.base()); };
+template <typename T>
+bool					operator<(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() < rhs.base()); };
+template <typename T>
+bool					operator>(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() > rhs.base()); };
+template <typename T>
+bool					operator<=(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() <= rhs.base()); };
+template <typename T>
+bool					operator>=(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() >= rhs.base()); };
 #endif

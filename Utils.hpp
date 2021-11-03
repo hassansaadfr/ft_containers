@@ -23,6 +23,7 @@ namespace ft {
 		typedef notConst_type	type;
 	};
 
+
 	template <typename T>
 	struct is_integral { static const bool value = false; };
 	template <>

@@ -4,8 +4,8 @@
 # include <iostream>
 # include <memory>
 # include <limits>
-# include <iterator>
 # include "Iterator.hpp"
+# include "ReverseIterator.hpp"
 
 namespace ft {
 	template < class T, class Allocator = std::allocator<T> >
@@ -20,8 +20,8 @@ namespace ft {
 			typedef typename allocator_type::const_pointer		const_pointer;
 			typedef Iterator<T, false>							iterator;
 			typedef Iterator<T, true>							const_iterator;
-			// typedef Iterator<T, true>							reverse_iterator;
-			// typedef Iterator<T, true>							const_reverse_iterator;
+			typedef ReverseIterator<T, true>					reverse_iterator;
+			typedef ReverseIterator<T, true>					const_reverse_iterator;
 			typedef ptrdiff_t									difference_type;
 			typedef size_t										size_type;
 
@@ -116,14 +116,14 @@ namespace ft {
 			void	clear() { _clear_alloc(_size); };
 
 			/* Iterators */
-			iterator		begin() { return iterator(_ptr); };
-			const_iterator	begin() const { return const_iterator(_ptr); };
-			iterator		end() { return iterator(_ptr + _size); };
-			const_iterator	end() const { return const_iterator(_ptr + _size); };
-			// iterator		rbegin() { return iterator(_ptr); };
-			// const_iterator	rbegin() const { return iterator(_ptr); };
-			// iterator		rend() { return iterator(_ptr + _size); };
-			// const_iterator	rend() const { return iterator(_ptr + _size); };
+			iterator				begin() { return iterator(_ptr); };
+			const_iterator			begin() const { return const_iterator(_ptr); };
+			iterator				end() { return iterator(_ptr + _size); };
+			const_iterator			end() const { return const_iterator(_ptr + _size); };
+			reverse_iterator		rbegin() { return reverse_iterator(_ptr); };
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_ptr); };
+			reverse_iterator		rend() { return reverse_iterator(_ptr + _size); };
+			const_reverse_iterator	rend() const { return const_reverse_iterator(_ptr + _size); };
 
 			/* Element access */
 			reference		operator[](size_type n) { return _ptr[n]; };
