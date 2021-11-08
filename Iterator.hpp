@@ -11,19 +11,8 @@
 #endif
 
 namespace ft {
-	template < class T, bool B >
+	template < class T>
 	class ReverseIterator;
-
-	template< class Iter >
-	struct iterator_traits
-	{
-		typedef typename Iter::difference_type														difference_type;
-		typedef typename Iter::value_type															value_type;
-		typedef typename Iter::pointer																pointer;
-		typedef typename Iter::reference															reference;
-		typedef typename Iter::iterator_category													iterator_category;
-	};
-
 	template <typename T, bool is_constant>
 	class Iterator
 	{
@@ -40,17 +29,14 @@ namespace ft {
 			~Iterator(void) {};
 			/* Copy constructor */
 			template < bool is_const >
-			Iterator(const Iterator<T, is_const> & rhs)
-			{
-				this->_ptr = rhs.base();
-			}
-			// explicit Iterator(const ReverseIterator<T, false> & rhs): _ptr(rhs.base()) {}
-
+			Iterator(const Iterator<T, is_const> & rhs): _ptr(rhs.base()) {}
 			/* Copy Assignation constructor */
-			reference		operator=(reference rhs)
+			Iterator&		operator=(Iterator const &rhs)
 			{
 				if (this != &rhs)
+				{
 					this->_ptr = rhs.base();
+				}
 				return *this;
 			}
 
@@ -126,9 +112,9 @@ namespace ft {
 }
 
 template<typename T>
-ft::Iterator<T, false> operator+(int offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() + offset)); }
+ft::Iterator<T, false> operator+(typename ft::Iterator<T, false>::difference_type offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() + offset)); }
 template<typename T>
-ft::Iterator<T, false> operator-(int offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() - offset)); }
+ft::Iterator<T, false> operator-(typename ft::Iterator<T, false>::difference_type offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() - offset)); }
 
 template <typename T>
 bool operator!=(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return lhs.base() != rhs.base(); }

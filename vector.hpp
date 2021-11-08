@@ -20,8 +20,8 @@ namespace ft {
 			typedef typename allocator_type::const_pointer		const_pointer;
 			typedef Iterator<T, false>							iterator;
 			typedef Iterator<T, true>							const_iterator;
-			typedef ReverseIterator<T, true>					reverse_iterator;
-			typedef ReverseIterator<T, true>					const_reverse_iterator;
+			typedef ReverseIterator<iterator>					reverse_iterator;
+			typedef ReverseIterator<const_iterator>				const_reverse_iterator;
 			typedef ptrdiff_t									difference_type;
 			typedef size_t										size_type;
 
@@ -62,7 +62,7 @@ namespace ft {
 			{
 				difference_type distance;
 
-				distance = std::distance(first, last);
+				distance = ft::distance(first, last);
 				_clear_alloc(_size);
 				reserve(distance);
 				_capacity = distance;
@@ -110,9 +110,79 @@ namespace ft {
 			template <class InputIterator>
 			void insert(iterator position, InputIterator first, InputIterator last, typename enable_if< !is_integral< InputIterator >::value >::type* = 0)
 			{
-				while (first != last)
-					position = _insert_n(position, *first++, 1);
+				InputIterator tmp_first = first;
+				size_type pos = &(*position) - _ptr;
+				pointer   tmp;
+				size_type len = 0;
+
+				for (InputIterator to = first; to != last; to++)
+					len++;
+				if (_size + len > _capacity)
+				{
+					tmp = _alloc.allocate(len);
+					for (size_type i = 0; tmp_first != last; tmp_first++, i++)
+						_alloc.construct(tmp + i, *tmp_first);
+					size_type i = 0;
+					size_type tmp_size = _size;
+					pointer tab;
+
+					tab = _alloc.allocate(_capacity + len);
+					for (; i < pos; i++)
+						_alloc.construct(tab + i, *(_ptr + i));
+					for (size_type l = 0; l < len; l++, i++)
+						_alloc.construct(tab + i, *(tmp + l));
+					for (; i - len < _size; i++)
+						_alloc.construct(tab + i, *(_ptr + i - len));
+					clear();
+					_size = tmp_size;
+					_alloc.deallocate(_ptr, _capacity);
+					for (size_type l = 0; l < len; l++)
+						_alloc.destroy(tmp + l);
+					_alloc.deallocate(tmp, len);
+					_ptr = tab;
+					_capacity += len;
+					_size += len;
+				}
+				else
+				{
+					while (first != last)
+						position = insert(position, *first++);
+				}
 			}
+
+			iterator erase(iterator position)
+			{
+
+				size_type pos = &(*position) - _ptr;
+
+				_alloc.destroy(_ptr + pos);
+				for (; pos < _size - 1; pos++)
+				{
+					_alloc.construct(_ptr + pos, *(_ptr + pos + 1));
+					_alloc.destroy(_ptr + pos + 1);
+				}
+				_size -= 1;
+				return (iterator(position));
+			}
+
+			iterator erase (iterator first, iterator last)
+			{
+				size_type n = 0;
+				size_type pos = (&(*first) - _ptr);
+				for (iterator tmp = first; first != last; first++)
+					n++;
+				if (_size > 0 && n > 0) {
+					for (size_type i = 0; i < n; i++)
+						_alloc.destroy(_ptr + pos + i);
+					for (size_type l = pos; l + n < _size; l++) {
+						_alloc.construct(_ptr + l, *(_ptr + l + n));
+						_alloc.destroy(_ptr + l + n);
+					}
+					_size -= n;
+				}
+				return iterator(_ptr + pos);
+			};
+
 			void	clear() { _clear_alloc(_size); };
 
 			/* Iterators */
@@ -120,10 +190,10 @@ namespace ft {
 			const_iterator			begin() const { return const_iterator(_ptr); };
 			iterator				end() { return iterator(_ptr + _size); };
 			const_iterator			end() const { return const_iterator(_ptr + _size); };
-			reverse_iterator		rbegin() { return reverse_iterator(_ptr); };
-			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_ptr); };
-			reverse_iterator		rend() { return reverse_iterator(_ptr + _size); };
-			const_reverse_iterator	rend() const { return const_reverse_iterator(_ptr + _size); };
+			reverse_iterator		rbegin() { return reverse_iterator(_ptr + _size); };
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_ptr + _size); };
+			reverse_iterator		rend() { return reverse_iterator(_ptr); };
+			const_reverse_iterator	rend() const { return const_reverse_iterator(_ptr); };
 
 			/* Element access */
 			reference		operator[](size_type n) { return _ptr[n]; };
@@ -206,26 +276,71 @@ namespace ft {
 					_alloc.destroy(&_ptr[i]);
 				_size = 0;
 			}
-
-			iterator	_insert_n(iterator position, value_type const & val, size_type step)
+			template < class InputIterator >
+			iterator	_insert_n(InputIterator position, value_type const & val, size_type step)
 			{
 				size_type n = &(*position) - _ptr;
 
 				if (_size + step > _capacity)
 				{
 					reserve(_size + step);
-					position = iterator(_ptr + n);
+					position = InputIterator(_ptr + n);
 				}
-				for (iterator last = end(); last != position; last--)
+				for (InputIterator last = end(); last != position; last--)
 				{
 					_alloc.construct(&(*last), *(last - step));
-					_alloc.destroy(&(*last));
+					// _alloc.destroy(&(*last));
 				}
 				_alloc.construct(&(*position), val);
 				_size = _size + step;
 				return position;
 			}
+			template < class InputIterator >
+			void	_move_elem(InputIterator position, int offset)
+			{
+				_alloc.construct(&(*(position + offset)), *position);
+				_alloc.destroy(&(*position));
+			}
 	};
+
+	template <class T, class Alloc>
+	bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		for (size_t i = 0; i < lhs.size(); i++)
+		{
+			if (lhs[i] != rhs[i])
+				return false;
+		}
+		return true;
+	};
+	template <class T, class Alloc>
+	bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+	template <class T, class Alloc>
+	bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+	template <class T, class Alloc>
+	bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return !(rhs < lhs);
+	}
+	template <class T, class Alloc>
+	bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	}
+	template <class T, class Alloc>
+	bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return !(lhs < rhs);
+	}
 }
+
 
 #endif

@@ -2,22 +2,42 @@
 #include <iterator>
 #include "Iterator.hpp"
 #include <vector>
+#include <list>
 
-int main(void)
+
+template < typename T >
+void	print_vector(T begin, T end)
 {
-	ft::vector<int> v;
-
-	v.push_back(42);
-	v.push_back(43);
-	v.push_back(44);
-	v.push_back(45);
+	for (; begin != end ; begin++)
+		std::cout << *begin << std::endl;
+}
 
 
-	for (ft::vector<int>::iterator i = v.begin(); i < v.end(); i++)
-	{
-		std::cout << *i << std::endl;
-	}
+#define TESTED_TYPE int
+
+int		main(void)
+{
+	std::list<TESTED_TYPE> lst;
+	std::list<TESTED_TYPE>::iterator lst_it;
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
+
+	ft::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
+	std::vector<TESTED_TYPE> vct2(lst.begin(), lst.end());
 
 
-	return 0;
+
+	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	vct2.insert(vct2.end(), lst.rbegin(), lst.rend());
+	// std::cout << "+++++++++++++" << std::endl;
+	// std::cout << "STL" << std::endl;
+	// print_vector(vct2.begin(), vct2.end());
+	// std::cout << "My vector" << std::endl;
+	// print_vector(vct.begin(), vct.end());
+	// std::cout << "+++++++++++++" << std::endl;
+
+	// std::cout << *vct.rbegin() << std::endl;
+	// std::cout << *vct2.rbegin() << std::endl;
+
+	return (0);
 }

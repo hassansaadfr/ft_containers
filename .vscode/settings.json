@@ -49,6 +49,19 @@
 		"bit": "cpp",
 		"list": "cpp",
 		"map": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"hash_map": "cpp",
+		"hash_set": "cpp",
+		"chrono": "cpp",
+		"condition_variable": "cpp",
+		"csignal": "cpp",
+		"cstring": "cpp",
+		"ctime": "cpp",
+		"forward_list": "cpp",
+		"ratio": "cpp",
+		"iomanip": "cpp",
+		"mutex": "cpp",
+		"thread": "cpp",
+		"cinttypes": "cpp"
 	}
 }
