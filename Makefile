@@ -2,7 +2,7 @@ CXX			=	clang++
 
 NAME		=	a.out
 
-HEAD		=	-I srcs
+HEAD		=	-I ./
 
 CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98 -g
 

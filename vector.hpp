@@ -185,6 +185,14 @@ namespace ft {
 
 			void	clear() { _clear_alloc(_size); };
 
+			void	swap(vector& other)
+			{
+				_swap(_size, other._size);
+				_swap(_capacity, other._capacity);
+				_swap(_alloc, other._alloc);
+				_swap(_ptr, other._ptr);
+			}
+
 			/* Iterators */
 			iterator				begin() { return iterator(_ptr); };
 			const_iterator			begin() const { return const_iterator(_ptr); };
@@ -301,6 +309,13 @@ namespace ft {
 				_alloc.construct(&(*(position + offset)), *position);
 				_alloc.destroy(&(*position));
 			}
+			template <typename Any>
+			void _swap(Any & a, Any & b)
+			{
+				Any tmp = a;
+				a = b;
+				b = tmp;
+			}
 	};
 
 	template <class T, class Alloc>
@@ -341,6 +356,5 @@ namespace ft {
 		return !(lhs < rhs);
 	}
 }
-
 
 #endif

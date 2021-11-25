@@ -41,87 +41,43 @@ namespace ft {
 			}
 
 			/* Comparaisons Part */
-			bool					operator==(Iterator const &rhs) const { return (_ptr == rhs._ptr); };
-			bool 					operator!=(Iterator const &rhs) const { return (rhs._ptr != _ptr); }
-			bool					operator<(Iterator const &rhs) const { return (_ptr < rhs._ptr); };
-			bool					operator>(Iterator const &rhs) const { return (_ptr > rhs._ptr); };
-			bool					operator<=(Iterator const &rhs) const { return (_ptr <= rhs._ptr); };
-			bool					operator>=(Iterator const &rhs) const { return (_ptr >= rhs._ptr); };
+			bool			operator==(Iterator const &rhs) const { return (_ptr == rhs._ptr); };
+			bool 			operator!=(Iterator const &rhs) const { return (rhs._ptr != _ptr); }
+			bool			operator<(Iterator const &rhs) const { return (_ptr < rhs._ptr); };
+			bool			operator>(Iterator const &rhs) const { return (_ptr > rhs._ptr); };
+			bool			operator<=(Iterator const &rhs) const { return (_ptr <= rhs._ptr); };
+			bool			operator>=(Iterator const &rhs) const { return (_ptr >= rhs._ptr); };
 
 			/* Increment Decrement Part */
-			Iterator&	operator++(void)
-			{
-				_ptr++;
-				return *this;
-			}
-			Iterator&	operator--(void)
-			{
-				_ptr--;
-				return *this;
-			}
-			Iterator	operator++(int)
-			{
-				Iterator	old = *this;
-				operator++();
-				return old;
-			}
-			Iterator	operator--(int)
-			{
-				Iterator	old = *this;
-				operator--();
-				return old;
-			}
-
-			reference operator*(void) const { return *_ptr; }
-			pointer operator->(void) const { return _ptr; }
+			Iterator&		operator++(void) { _ptr++; return *this; }
+			Iterator&		operator--(void) { _ptr--; return *this; }
+			Iterator		operator++(int) { Iterator	old = *this; operator++(); return old; }
+			Iterator		operator--(int) { Iterator	old = *this; operator--(); return old; }
+			reference		operator*(void) const { return *_ptr; }
+			pointer			operator->(void) const { return _ptr; }
 			/* Arithmetic operations */
-			Iterator	operator+(difference_type const &rhs) const
-			{
-				return Iterator(_ptr + rhs);
-			}
-			Iterator	operator-(difference_type rhs)
-			{
-				return Iterator(_ptr - rhs);
-			}
-			difference_type	operator-(Iterator const &rhs)
-			{
-				return _ptr - rhs._ptr;
-			}
+			Iterator		operator+(difference_type const &rhs) const { return Iterator(_ptr + rhs); }
+			Iterator		operator-(difference_type rhs) const { return Iterator(_ptr - rhs); }
+			difference_type	operator-(Iterator const &rhs) const { return _ptr - rhs._ptr; }
 			/* Compound assignement arithmetics operations */
-			Iterator&		operator+=(difference_type const &rhs)
-			{
-				_ptr += rhs;
-				return *(this);
-			}
-
-			Iterator&	operator-=(difference_type rhs)
-			{
-				_ptr -= rhs;
-				return *this;
-			}
+			Iterator&		operator+=(difference_type const &rhs) { _ptr += rhs; return *(this); }
+			Iterator&		operator-=(difference_type rhs) { _ptr -= rhs; return *this; }
 			/* Offset dereference operator */
-			reference	operator[](difference_type rhs)
-			{
-				return *(_ptr + rhs);
-			}
-
-			pointer base(void) const { return _ptr; };
+			reference		operator[](difference_type rhs) { return *(_ptr + rhs); }
+			pointer			base(void) const { return _ptr; };
 		private:
-			pointer	_ptr;
+			pointer			_ptr;
 	};
 }
 
-template<typename T>
-ft::Iterator<T, false> operator+(typename ft::Iterator<T, false>::difference_type offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() + offset)); }
-template<typename T>
-ft::Iterator<T, false> operator-(typename ft::Iterator<T, false>::difference_type offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() - offset)); }
-
 template <typename T>
-bool operator!=(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return lhs.base() != rhs.base(); }
-
-
+bool					operator!=(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return lhs.base() != rhs.base(); }
 template <typename T>
 bool					operator==(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() == rhs.base()); };
+template<typename T>
+ft::Iterator<T, false>	operator+(typename ft::Iterator<T, false>::difference_type offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() + offset)); }
+template<typename T>
+ft::Iterator<T, false>	operator-(typename ft::Iterator<T, false>::difference_type offset, ft::Iterator<T, false> & rhs) { return (ft::Iterator<T, false>(rhs.base() - offset)); }
 template <typename T>
 bool					operator<(const ft::Iterator<T, false>& lhs, const ft::Iterator<T, true>& rhs) { return (lhs.base() < rhs.base()); };
 template <typename T>
