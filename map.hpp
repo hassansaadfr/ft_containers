@@ -39,15 +39,16 @@ namespace ft {
 				{
 					_bst.insert(*first);
 					first++;
+					_size++;
 				}
 			}
 			~map();
 
 		private:
-			RedBlackTree	_bst;
-			allocator_type	_alloc;
-			Compare			_comp;
-			size_type		_size;
+			RedBlackTree<value_type>	_bst;
+			allocator_type				_alloc;
+			Compare						_comp;
+			size_type					_size;
 	};
 }
 #endif

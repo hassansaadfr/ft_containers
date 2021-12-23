@@ -266,16 +266,6 @@
 			}
 
 		public:
-			// RedBlackTree(const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(0)
-			// {
-			// 	TNULL = _alloc.allocate(1);
-			// 	node_ptr tmp;
-			// 	tmp->color = 0;
-			// 	tmp->left = NULL;
-			// 	tmp->right = NULL;
-			// 	_alloc.construct(&TNULL, tmp);
-			// 	root = TNULL;
-			// }
 			RedBlackTree(const key_compare &comp = key_compare()) : _comp(comp), _alloc(allocator_node())
 			{
 				TNULL = _alloc.allocate(1);
@@ -354,6 +344,8 @@
 				node_ptr y = x->parent;
 				while (y != TNULL && x == y->left) {
 					x = y;
+					if (y->parent == NULL)
+						return NULL;
 					y = y->parent;
 				}
 
@@ -468,34 +460,28 @@
 
 int main()
 {
-    RedBlackTree<ft::pair<int, int> > bst;
-    bst.insert(ft::make_pair(1, 1));
-    bst.insert(ft::make_pair(2, 2));
-    bst.insert(ft::make_pair(3, 3));
-    bst.insert(ft::make_pair(4, 4));
-    bst.insert(ft::make_pair(5, 5));
-    bst.insert(ft::make_pair(6, 6));
-    bst.insert(ft::make_pair(7, 7));
-    bst.insert(ft::make_pair(8, 8));
-
-    bst.deleteNode(ft::make_pair(3, 3));
-    bst.deleteNode(ft::make_pair(4, 4));
-    bst.deleteNode(ft::make_pair(5, 5));
-    bst.deleteNode(ft::make_pair(6, 6));
-    bst.deleteNode(ft::make_pair(7, 7));
-    bst.deleteNode(ft::make_pair(8, 8));
-    bst.deleteNode(ft::make_pair(1, 1));
+    RedBlackTree<int> bst;
+    bst.insert(4);
+    bst.insert(5);
+    bst.insert(1);
+    bst.insert(42);
 
 
 
     bst.printTree();
 
-    RedBlackTree<ft::pair<int, int> >::node_ptr min = bst.minimum(bst.getRoot());
-
+    RedBlackTree<int>::node_ptr min = bst.minimum(bst.getRoot());
     while (min != NULL)
     {
         std::cout << min->data << std::endl;
         min = bst.successor(min);
+    }
+
+    RedBlackTree<int>::node_ptr max = bst.maximum(bst.getRoot());
+    while (max != NULL)
+    {
+        std::cout << max->data << std::endl;
+        max = bst.predecessor(max);
     }
 
     return 0;
