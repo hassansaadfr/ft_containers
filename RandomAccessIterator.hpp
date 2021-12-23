@@ -1,5 +1,5 @@
-#ifndef ITERATOR_H
-# define ITERATOR_H
+#ifndef RANDOM_ACCESS_ITERATOR_HPP
+# define RANDOM_ACCESS_ITERATOR_HPP
 
 # include <iostream>
 # include <cstddef>
@@ -7,7 +7,7 @@
 
 #ifndef REVERSE_INCLUDE
  #define REVERSE_INCLUDE
- #include "ReverseIterator.hpp"
+ #include "RandomReverseAccessIterator.hpp"
 #endif
 
 namespace ft {

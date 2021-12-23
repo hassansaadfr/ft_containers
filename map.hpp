@@ -2,8 +2,9 @@
 # define MAP_H
 
 #include "Utils.hpp"
-#include "Iterator.hpp"
-#include "ReverseIterator.hpp"
+#include "RandomAccessIterator.hpp"
+#include "RandomReverseAccessIterator.hpp"
+#include "RedBlackTree.hpp"
 
 namespace ft {
 	template< class Key, class T, class Compare = ft::less<Key>, class Allocator = std::allocator<std::pair<const Key, T> > >
@@ -26,9 +27,27 @@ namespace ft {
 			typedef ReverseIterator<const_iterator>		const_reverse_iterator;
 
 			/* Constructors */
-			map();
-			explicit map(const Compare& comp, const Allocator& alloc = Allocator());
-			map(const map& other);
+			map():_alloc(NULL), _comp(NULL), _size(0) {};
+			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc), _size(0) {};
+			// map(const map& other);
+			template< class InputIt >
+			map(InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator())
+			{
+				_comp = comp;
+				_alloc = alloc;
+				while (first != last)
+				{
+					_bst.insert(*first);
+					first++;
+				}
+			}
+			~map();
+
+		private:
+			RedBlackTree	_bst;
+			allocator_type	_alloc;
+			Compare			_comp;
+			size_type		_size;
 	};
 }
 #endif
