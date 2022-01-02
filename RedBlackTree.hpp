@@ -1,3 +1,5 @@
+#ifndef REDBLACKTREE_HPP
+# define REDBLACKTREE_HPP
 #include <iostream>
 #include "Utils.hpp"
 
@@ -11,6 +13,9 @@ namespace ft {
 		node_ptr			left;
 		node_ptr			right;
 		int					color;
+
+		Node(value_type key): data(key), parent(NULL), color(1)
+		{}
 	};
 
 	template < typename T, class Compare = ft::less<T>, class Allocator = std::allocator< T > >
@@ -24,15 +29,12 @@ namespace ft {
 			typedef size_t														size_type;
 			typedef typename allocator_type::template rebind<node_type>::other	allocator_node;
 
-
 		private:
 			node_ptr															root;
 			node_ptr															TNULL;
 			allocator_node														_alloc;
 			size_type															_size;
 			key_compare															_comp;
-
-
 
 			// Preorder
 			void preOrderHelper(node_ptr node) {
@@ -60,13 +62,11 @@ namespace ft {
 					std::cout << node->data << " ";
 				}
 			}
-
 			node_ptr searchTreeHelper(node_ptr node, value_type key) {
-				if (node == TNULL || key == node->data) {
+				if (node == TNULL || (!_comp(key, node->data) && !_comp(node->data, key))) {
 					return node;
 				}
-
-				if (key < node->data) {
+				if (_comp(key, node->data)) {
 					return searchTreeHelper(node->left, key);
 				}
 				return searchTreeHelper(node->right, key);
@@ -148,11 +148,11 @@ namespace ft {
 				node_ptr z = TNULL;
 				node_ptr x, y;
 				while (node != TNULL) {
-					if (node->data == key) {
+					if ((!_comp(key, node->data) && !_comp(node->data, key))) {
 						z = node;
 					}
 
-					if (node->data <= key) {
+					if ((!_comp(key, node->data) && !_comp(node->data, key)) || _comp(node->data, key)) {
 						node = node->right;
 					} else {
 						node = node->left;
@@ -196,14 +196,13 @@ namespace ft {
 				}
 				_alloc.destroy(z);
 				_alloc.deallocate(z, 1);
-				// delete z;
 				if (y_original_color == 0) {
 					deleteFix(x);
 				}
 			}
 
 			// For balancing the tree after insertion
-			void insertFix(node_ptr k) {
+			node_ptr insertFix(node_ptr k) {
 				node_ptr u;
 				while (k->parent->color == 1) {
 					if (k->parent == k->parent->parent->right) {
@@ -244,6 +243,7 @@ namespace ft {
 						break;
 					}
 				}
+				return k;
 				root->color = 0;
 			}
 
@@ -259,14 +259,14 @@ namespace ft {
 					}
 
 					std::string sColor = root->color ? "RED" : "BLACK";
-					std::cout << root->data << "(" << sColor << ")" << std::endl;
+					std::cout << " [ " << root->data.first << ", " << root->data.second << " ] " << "(" << sColor << ")" << std::endl;
 					printHelper(root->left, indent, false);
 					printHelper(root->right, indent, true);
 				}
 			}
 
 		public:
-			RedBlackTree(const key_compare &comp = key_compare()) : _comp(comp), _alloc(allocator_node())
+			RedBlackTree(const key_compare &comp = key_compare()) : _alloc(allocator_node()), _comp(comp)
 			{
 				TNULL = _alloc.allocate(1);
 				TNULL->color = 0;
@@ -280,13 +280,28 @@ namespace ft {
 					destroy(root);
 				_alloc.deallocate(TNULL, 1);
 			}
+
+			RedBlackTree&		operator=(RedBlackTree const &src)
+			{
+				if (this == &src)
+					return *this;
+
+				typename RedBlackTree<value_type>::node_ptr min = src.minimum(src.getRoot());
+				while (min != NULL)
+				{
+					this->insert(min->data);
+					min = src.successor(min);
+				}
+				return *this;
+			};
+
 			void destroy(node_ptr x)
 			{
-				if (x->left != TNULL)
+				if (x && x->left != TNULL)
 				{
 					destroy(x->left);
 				}
-				if (x->right != TNULL)
+				if (x && x->right != TNULL)
 				{
 					destroy(x->right);
 				}
@@ -309,21 +324,30 @@ namespace ft {
 				return searchTreeHelper(this->root, k);
 			}
 
-			node_ptr minimum(node_ptr node) {
+			ft::pair<node_ptr, bool>	search_node(value_type k)
+			{
+				node_ptr elem = searchTree(k);
+				bool found = elem != TNULL;
+				return ft::make_pair(elem, found);
+			}
+
+			node_ptr minimum(node_ptr node) const {
 				while (node->left != TNULL) {
 					node = node->left;
 				}
+				if (node->parent && node->parent != TNULL)
+					return node->parent;
 				return node;
 			}
 
-			node_ptr maximum(node_ptr node) {
+			node_ptr maximum(node_ptr node) const {
 				while (node->right != TNULL) {
 					node = node->right;
 				}
 				return node;
 			}
 
-			node_ptr successor(node_ptr x) {
+			node_ptr successor(node_ptr x) const {
 				if (x->right != TNULL) {
 					return minimum(x->right);
 				}
@@ -336,7 +360,7 @@ namespace ft {
 				return y;
 			}
 
-			node_ptr predecessor(node_ptr x) {
+			node_ptr predecessor(node_ptr x) const {
 				if (x->left != TNULL) {
 					return maximum(x->left);
 				}
@@ -389,10 +413,9 @@ namespace ft {
 			}
 
 			// Inserting a node
-			void insert(value_type key) {
+			node_ptr insert(const value_type key) {
 				node_ptr node = _alloc.allocate(1);
-				node->parent = NULL;
-				node->data = key;
+				_alloc.construct(node, Node<T>(key));
 				node->left = TNULL;
 				node->right = TNULL;
 				node->color = 1;
@@ -403,25 +426,24 @@ namespace ft {
 					TNULL->left = NULL;
 					TNULL->right = NULL;
 					root = TNULL;
-					return;
+					return node;
 				}
 				node_ptr y = NULL;
 				node_ptr x = this->root;
 
 				while (x != TNULL) {
-
 					y = x;
-					if (node->data < x->data) {
+					if (_comp(node->data, x->data))
 						x = x->left;
-					} else {
+					else
 						x = x->right;
-					}
 				}
 
 				node->parent = y;
 				if (y == NULL) {
 					root = node;
-				} else if (node->data < y->data) {
+
+				} else if (_comp(node->data, y->data)) {
 					y->left = node;
 				} else {
 					y->right = node;
@@ -429,17 +451,17 @@ namespace ft {
 
 				if (node->parent == NULL) {
 					node->color = 0;
-					return;
+					return node;
 				}
 
 				if (node->parent->parent == NULL) {
-					return;
+					return node;
 				}
 
-				insertFix(node);
+				return insertFix(node);
 			}
 
-			node_ptr getRoot() {
+			node_ptr getRoot() const {
 				return this->root;
 			}
 
@@ -454,3 +476,4 @@ namespace ft {
 			}
 	};
 }
+#endif

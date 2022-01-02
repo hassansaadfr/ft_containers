@@ -4,6 +4,8 @@
 # include <iostream>
 
 namespace ft {
+	struct random_access_iterator_tag {};
+	struct bidirectional_iterator_tag {};
 	template< class Iter >
 	struct iterator_traits
 	{
@@ -111,7 +113,7 @@ namespace ft {
 		pair& operator=( const pair& other ) {
 			if (this == &other)
 				return *this;
-			first = other.first; //
+			first = other.first;
 			second = other.second;
 			return *this;
 		};

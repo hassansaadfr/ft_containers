@@ -1,43 +1,51 @@
-#include "vector.hpp"
-#include <iterator>
-#include "Iterator.hpp"
-#include <vector>
-#include <list>
+// constructing maps
+#include <iostream>
+// #include <map>
+
+// bool fncomp (char lhs, char rhs) {return lhs<rhs;}
+
+// struct classcomp {
+//   bool operator() (const char& lhs, const char& rhs) const
+//   {return lhs<rhs;}
+// };
+
+// int main ()
+// {
+//   std::map<char,int> first;
+
+//   first['a']=10;
+//   first['b']=30;
+//   first['c']=50;
+//   first['d']=70;
+
+//   std::map<char,int> second (first.begin(),first.end());
+
+//   std::map<char,int> third (second);
+
+//   std::map<char,int,classcomp> fourth;                 // class as Compare
+
+//   bool(*fn_pt)(char,char) = fncomp;
+//   std::map<char,int,bool(*)(char,char)> fifth (fn_pt); // function pointer as Compare
+
+//   return 0;
+// }
+
+#include "RedBlackTree.hpp"
+#include "Utils.hpp"
+#include "map.hpp"
+#include <iostream>
+#include <map>
 
 
-template < typename T >
-void	print_vector(T begin, T end)
+namespace nm = ft;
+int main()
 {
-	for (; begin != end ; begin++)
-		std::cout << *begin << std::endl;
-}
+	nm::map<int, int> m;
+	m.insert(ft::make_pair(10,12));
+	m.insert(ft::make_pair(20,32));
+	nm::map<int, int>::iterator it = m.begin();
+	std::cout << it->first << std::endl;
+	it++;
+	std::cout << it->first << std::endl;
 
-
-#define TESTED_TYPE int
-
-int		main(void)
-{
-	std::list<TESTED_TYPE> lst;
-	std::list<TESTED_TYPE>::iterator lst_it;
-	for (int i = 1; i < 5; ++i)
-		lst.push_back(i * 3);
-
-	ft::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
-	std::vector<TESTED_TYPE> vct2(lst.begin(), lst.end());
-
-
-
-	vct.insert(vct.end(), lst.rbegin(), lst.rend());
-	vct2.insert(vct2.end(), lst.rbegin(), lst.rend());
-	// std::cout << "+++++++++++++" << std::endl;
-	// std::cout << "STL" << std::endl;
-	// print_vector(vct2.begin(), vct2.end());
-	// std::cout << "My vector" << std::endl;
-	// print_vector(vct.begin(), vct.end());
-	// std::cout << "+++++++++++++" << std::endl;
-
-	// std::cout << *vct.rbegin() << std::endl;
-	// std::cout << *vct2.rbegin() << std::endl;
-
-	return (0);
 }
