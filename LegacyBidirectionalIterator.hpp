@@ -51,7 +51,10 @@ namespace ft {
 			bool							operator>=(LegacyBidirectionalIterator const &rhs) const { return (_ptr >= rhs._ptr); };
 
 			/* Increment Decrement Part */
-			LegacyBidirectionalIterator&	operator++(void) { return *this; }
+			LegacyBidirectionalIterator&	operator++(void)
+			{
+				return *this;
+			}
 			LegacyBidirectionalIterator&	operator--(void) { _ptr--; return *this; }
 			LegacyBidirectionalIterator		operator++(int) { LegacyBidirectionalIterator	old = *this; operator++(); return old; }
 			LegacyBidirectionalIterator		operator--(int) { LegacyBidirectionalIterator	old = *this; operator--(); return old; }

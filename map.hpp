@@ -40,11 +40,11 @@ namespace ft {
 			/* Constructors */
 			map(): _alloc(Allocator()), _comp(Compare()), _size(0)
 			{
-				_bst.insert(value_type());
+				// _bst.insert(value_type());
 			};
 			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc), _size(0)
 			{
-				_bst.insert(value_type());
+				// _bst.insert(value_type());
 			};
 			map(const map& other): _alloc(other._alloc), _comp(other._comp)
 			{
@@ -131,7 +131,7 @@ namespace ft {
 
 		private:
 			// RedBlackTree<value_type, Compare, allocator_type>	_bst;
-			RedBlackTree<value_type>	_bst;
+			RedBlackTree<value_type>						_bst;
 			allocator_type									_alloc;
 			Compare											_comp;
 			size_type										_size;
