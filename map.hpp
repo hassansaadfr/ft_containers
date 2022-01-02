@@ -99,6 +99,12 @@ namespace ft {
 				return ft::make_pair(searchResult.first, false);
 			}
 
+			void clear()
+			{
+				_size = 0;
+			}
+
+
 			// TEMPORARY
 			void print() { _bst.printTree(); };
 
