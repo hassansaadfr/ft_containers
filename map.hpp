@@ -23,6 +23,7 @@ namespace ft {
 			typedef typename Allocator::const_pointer											const_pointer;
 
 			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>::node_ptr	node_ptr;
+
 			typedef ft::LegacyBidirectionalIterator<Node<value_type>, false>					iterator;
 			typedef ft::LegacyBidirectionalIterator<Node<value_type>, true>						const_iterator;
 

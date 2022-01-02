@@ -38,38 +38,43 @@
 
 
 namespace nm = ft;
-int main()
+template <typename T>
+void	rb_three_print_desc(nm::RedBlackTree<T> three)
 {
-	// nm::map<int, int> m;
-	// m.insert(ft::make_pair(10,12));
-	// m.insert(ft::make_pair(20,32));
-	// m.print();
-	// nm::map<int, int>::iterator it = m.begin();
-	// std::cout << it->first << std::endl;
-	// it++;
-	// std::cout << it->first << std::endl;
-
-	nm::RedBlackTree<int> three;
-	three.insert(100);
-	three.insert(1000);
-	three.insert(1);
-	// three.printTree();
-	// plus grand plus petit
-	nm::RedBlackTree<int> three2(three);
-
-	nm::RedBlackTree<int>::node_ptr max = three2.maximum(three2.getRoot());
+	ft::RedBlackTree<int>::node_ptr max = three.maximum(three.getRoot());
 	while (max != NULL)
 	{
 		std::cout << max->data << std::endl;
-		max = three2.predecessor(max);
+		max = three.predecessor(max);
 	}
+}
 
-	// plus petit plus grand
-	nm::RedBlackTree<int>::node_ptr min = three2.minimum(three2.getRoot());
+template <typename T>
+void	rb_three_print_asc(nm::RedBlackTree<T> three)
+{
+	ft::RedBlackTree<int>::node_ptr min = three.minimum(three.getRoot());
 	while (min != NULL)
 	{
 		std::cout << min->data << std::endl;
-		min = three2.successor(min);
+		min = three.successor(min);
 	}
+}
 
+int main()
+{
+	nm::map<int, int> m;
+	m.insert(ft::make_pair(10,12));
+	m.insert(ft::make_pair(20,32));
+	m.print();
+	nm::map<int, int>::iterator it = m.begin();
+	// std::cout << it->first << std::endl;
+	it++;
+	// std::cout << it->first << std::endl;
+
+	// nm::RedBlackTree<int> three;
+	// three.insert(100);
+	// three.insert(1000);
+	// three.insert(1);
+	// rb_three_print_desc<int>(three);
+	// rb_three_print_asc<int>(three);
 }

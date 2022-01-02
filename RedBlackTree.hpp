@@ -13,56 +13,9 @@ namespace ft {
 		node_ptr			left;
 		node_ptr			right;
 		int					color;
-		node_ptr			end;
 
-		Node(value_type key): data(key), parent(NULL), color(1), end(NULL)
+		Node(value_type key): data(key), parent(NULL), color(1)
 		{}
-
-		node_ptr minimum(node_ptr node) const {
-				while (node->left != this->end) {
-					node = node->left;
-				}
-				if (node->parent && node->parent != this->end)
-					return node->parent;
-				return node;
-			}
-
-			node_ptr maximum(node_ptr node) const {
-				while (node->right != this->end) {
-					node = node->right;
-				}
-				return node;
-			}
-
-			node_ptr successor(node_ptr x) const {
-				if (x->right != this->end) {
-					return minimum(x->right);
-				}
-
-				node_ptr y = x->parent;
-				while (y && x && y != this->end && x == y->right) {
-					x = y;
-					y = y->parent;
-				}
-				return y;
-			}
-
-			node_ptr predecessor(node_ptr x) const {
-				if (x->left != this->end) {
-					return maximum(x->left);
-				}
-
-				node_ptr y = x->parent;
-				while (y != this->end && x == y->left) {
-					x = y;
-					if (y->parent == NULL)
-						return NULL;
-					y = y->parent;
-				}
-
-				return y;
-			}
-
 	};
 
 	template < typename T, class Compare = ft::less<T>, class Allocator = std::allocator< T > >
@@ -484,7 +437,6 @@ namespace ft {
 				node->left = TNULL;
 				node->right = TNULL;
 				node->color = 1;
-				node->end = TNULL;
 				if (!root)
 				{
 					TNULL = _alloc.allocate(1);

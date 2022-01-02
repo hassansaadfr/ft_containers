@@ -53,6 +53,7 @@ namespace ft {
 			/* Increment Decrement Part */
 			LegacyBidirectionalIterator&	operator++(void)
 			{
+
 				return *this;
 			}
 			LegacyBidirectionalIterator&	operator--(void) { _ptr--; return *this; }
