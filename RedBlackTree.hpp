@@ -4,29 +4,32 @@
 #include "Utils.hpp"
 
 namespace ft {
-	template < typename T >
-	struct Node {
-		typedef T			value_type;
-		typedef Node<T>*	node_ptr;
-		value_type			data;
-		node_ptr			parent;
-		node_ptr			left;
-		node_ptr			right;
-		int					color;
-
-		Node(value_type key): data(key), parent(NULL), color(1)
-		{}
-	};
 
 	template < typename T, class Compare = ft::less<T>, class Allocator = std::allocator< T > >
 	class RedBlackTree {
+
+
 		public:
 			typedef T															value_type;
 			typedef Compare														key_compare;
-			typedef Node<T>														node_type;
-			typedef typename node_type::node_ptr								node_ptr;
 			typedef Allocator													allocator_type;
 			typedef size_t														size_type;
+
+			struct Node {
+				typedef T			value_type;
+				value_type			data;
+				Node*				parent;
+				Node*				left;
+				Node*				right;
+				int					color;
+
+				Node(value_type key): data(key), parent(NULL), color(1)
+				{}
+			};
+
+		public:
+			typedef Node														node_type;
+			typedef node_type*													node_ptr;
 			typedef typename allocator_type::template rebind<node_type>::other	allocator_node;
 
 		private:
@@ -284,7 +287,6 @@ namespace ft {
 				node_ptr min = x.minimum(x.getRoot());
 				while (min != NULL)
 				{
-					std::cout << min->data << std::endl;
 					insert(min->data);
 					min = x.successor(min);
 				}
@@ -433,7 +435,7 @@ namespace ft {
 			// Inserting a node
 			node_ptr insert(const value_type key) {
 				node_ptr node = _alloc.allocate(1);
-				_alloc.construct(node, Node<T>(key));
+				_alloc.construct(node, Node(key));
 				node->left = TNULL;
 				node->right = TNULL;
 				node->color = 1;

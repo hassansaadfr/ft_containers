@@ -22,10 +22,12 @@ namespace ft {
 			typedef typename Allocator::pointer													pointer;
 			typedef typename Allocator::const_pointer											const_pointer;
 
-			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>::node_ptr	node_ptr;
+			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>				tree;
+			typedef typename tree::node_ptr	node_ptr;
 
-			typedef ft::LegacyBidirectionalIterator<Node<value_type>, false>					iterator;
-			typedef ft::LegacyBidirectionalIterator<Node<value_type>, true>						const_iterator;
+
+			typedef ft::LegacyBidirectionalIterator<typename tree::node_type, false>			iterator;
+			typedef ft::LegacyBidirectionalIterator<typename tree::node_type, true>				const_iterator;
 
 			typedef LegacyReverseBidirectionalIterator<iterator>								reverse_iterator;
 			typedef LegacyReverseBidirectionalIterator<const_iterator>							const_reverse_iterator;
@@ -114,14 +116,14 @@ namespace ft {
 			size_type max_size() const { return _alloc.max_size(); };
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
-			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
-			iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
-			const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
-
-			reverse_iterator		rbegin() { return reverse_iterator(_bst.maximum(_bst.getRoot())); };
-			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_bst.maximum(_bst.getRoot())); };
-			reverse_iterator		rend() { return reverse_iterator(begin()); };
-			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); };
+			//const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
+			//iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
+			//const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
+//
+			//reverse_iterator		rbegin() { return reverse_iterator(_bst.maximum(_bst.getRoot())); };
+			//const_reverse_iterator	rbegin() const { return const_reverse_iterator(_bst.maximum(_bst.getRoot())); };
+			//reverse_iterator		rend() { return reverse_iterator(begin()); };
+			//const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); };
 
 			mapped_type& operator[] (const key_type& k)
 			{
