@@ -22,12 +22,12 @@ namespace ft {
 			typedef typename Allocator::pointer													pointer;
 			typedef typename Allocator::const_pointer											const_pointer;
 
-			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>				Tree;
+			// typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>		Tree; // Dont work when i pass compare in template dont know why
+			typedef typename ft::RedBlackTree<value_type>										Tree;
 			typedef typename Tree::node_ptr														node_ptr;
 
-
-			typedef ft::LegacyBidirectionalIterator<Node<value_type, Tree>, false>						iterator;
-			typedef ft::LegacyBidirectionalIterator<Node<value_type, Tree>, true>						const_iterator;
+			typedef ft::LegacyBidirectionalIterator<Node<value_type, Tree >, false>				iterator;
+			typedef ft::LegacyBidirectionalIterator<Node<value_type, Tree >, true>				const_iterator;
 
 			typedef LegacyReverseBidirectionalIterator<iterator>								reverse_iterator;
 			typedef LegacyReverseBidirectionalIterator<const_iterator>							const_reverse_iterator;
@@ -127,7 +127,7 @@ namespace ft {
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				typename ft::RedBlackTree<value_type>::node_ptr res = _bst.searchTree(k);
+				node_ptr res = _bst.searchTree(k);
 				if (res->first != k)
 					insert(ft::make_pair(k, mapped_type()));
 				return res->second;
@@ -140,7 +140,7 @@ namespace ft {
 
 		private:
 			// RedBlackTree<value_type, Compare, allocator_type>	_bst;
-			RedBlackTree<value_type>						_bst;
+			Tree						_bst;
 			allocator_type									_alloc;
 			Compare											_comp;
 			size_type										_size;

@@ -18,9 +18,7 @@ namespace ft
 			int							color;
 			RBTree*						ref;
 
-			Node(value_type key) : data(key), parent(NULL), color(1), ref(NULL)
-			{
-			}
+			Node(value_type key) : data(key), parent(NULL), color(1), ref(NULL) {}
 		};
 	template <typename T, class Compare = ft::less<T>, class Allocator = std::allocator<T> >
 	class RedBlackTree
@@ -31,7 +29,7 @@ namespace ft
 			typedef Allocator allocator_type;
 			typedef size_t size_type;
 			typedef Node<T, RedBlackTree> node_type;
-			typedef node_type *node_ptr;
+			typedef typename node_type::node_ptr node_ptr;
 			typedef typename allocator_type::template rebind<node_type>::other allocator_node;
 		private:
 			node_ptr root;
@@ -375,7 +373,7 @@ namespace ft
 				if (this == &src)
 					return *this;
 
-				typename RedBlackTree<value_type>::node_ptr min = src.minimum(src.getRoot());
+				node_ptr min = src.minimum(src.getRoot());
 				while (min != NULL)
 				{
 					this->insert(min->data);
