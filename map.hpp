@@ -116,21 +116,21 @@ namespace ft {
 			size_type max_size() const { return _alloc.max_size(); };
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
-			//const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
-			//iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
-			//const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
-//
-			//reverse_iterator		rbegin() { return reverse_iterator(_bst.maximum(_bst.getRoot())); };
-			//const_reverse_iterator	rbegin() const { return const_reverse_iterator(_bst.maximum(_bst.getRoot())); };
-			//reverse_iterator		rend() { return reverse_iterator(begin()); };
-			//const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); };
+			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
+			iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
+			const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
+
+			reverse_iterator		rbegin() { return reverse_iterator(_bst.maximum(_bst.getRoot())); };
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_bst.maximum(_bst.getRoot())); };
+			reverse_iterator		rend() { return reverse_iterator(begin()); };
+			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); };
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				node_ptr res = _bst.searchTree(k);
-				if (res->first != k)
-					insert(ft::make_pair(k, mapped_type()));
-				return res->second;
+				node_ptr res = _bst.search_node(k);
+				if (res.second == false)
+					return (insert(ft::make_pair(k, mapped_type())).first);
+				return res->first;
 
 				// iterator find = searchNode(k);
                 // if (find._M_node == _end)

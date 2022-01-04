@@ -363,7 +363,7 @@ namespace ft
 			}
 			~RedBlackTree()
 			{
-				if (root)
+				if (root && root != TNULL)
 					destroy(root);
 				_alloc.deallocate(TNULL, 1);
 			}
@@ -424,6 +424,8 @@ namespace ft
 
 			node_ptr minimum(node_ptr node) const
 			{
+				if (root == TNULL)
+					return NULL;
 				while (node->left != TNULL)
 				{
 					node = node->left;

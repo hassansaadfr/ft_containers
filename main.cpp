@@ -67,8 +67,10 @@ int main()
 	m.insert(ft::make_pair(20,32));
 	m.print();
 	nm::map<int, int>::iterator it = m.begin();
-	// std::cout << it->first << std::endl;
-	it++;
+	std::cout << *it << std::endl;
+	++it;
+	std::cout << *it << std::endl;
+
 	// std::cout << it->first << std::endl;
 
 	// nm::RedBlackTree<int> three;
@@ -78,3 +80,8 @@ int main()
 	// rb_three_print_desc<int>(three);
 	// rb_three_print_asc<int>(three);
 }
+
+
+// 'Node<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::RedBlackTree<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::less<ft::pair<const int, std::__cxx11::basic_string<char> > >, std::allocator<ft::pair<const int, std::__cxx11::basic_string<char> > > > > *'
+
+// 'const ft::Node<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::RedBlackTree<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::less<ft::pair<const int, std::__cxx11::basic_string<char> > >, std::allocator<ft::pair<const int, std::__cxx11::basic_string<char> > > > > *'
