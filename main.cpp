@@ -38,37 +38,37 @@
 
 
 namespace nm = ft;
-template <typename T>
-void	rb_three_print_desc(nm::RedBlackTree<T> three)
-{
-	ft::RedBlackTree<int>::node_ptr max = three.maximum(three.getRoot());
-	while (max != NULL)
-	{
-		std::cout << max->data << std::endl;
-		max = three.predecessor(max);
-	}
-}
+// template <typename T>
+// void	rb_three_print_desc(nm::RedBlackTree<T> three)
+// {
+// 	ft::RedBlackTree<int>::node_ptr max = three.maximum(three.getRoot());
+// 	while (max != NULL)
+// 	{
+// 		std::cout << max->data << std::endl;
+// 		max = three.predecessor(max);
+// 	}
+// }
 
-template <typename T>
-void	rb_three_print_asc(nm::RedBlackTree<T> three)
-{
-	ft::RedBlackTree<int>::node_ptr min = three.minimum(three.getRoot());
-	while (min != NULL)
-	{
-		std::cout << min->data << std::endl;
-		min = three.successor(min);
-	}
-}
+// template <typename T>
+// void	rb_three_print_asc(nm::RedBlackTree<T> three)
+// {
+// 	ft::RedBlackTree<int>::node_ptr min = three.minimum(three.getRoot());
+// 	while (min != NULL)
+// 	{
+// 		std::cout << min->data << std::endl;
+// 		min = three.successor(min);
+// 	}
+// }
 
 int main()
 {
 	nm::map<int, int> m;
 	m.insert(ft::make_pair(10,12));
 	m.insert(ft::make_pair(20,32));
+	m.insert(ft::make_pair(42,34));
 	m.print();
 	nm::map<int, int>::iterator it = m.begin();
-	std::cout << *it << std::endl;
-	++it;
+	it++;
 	std::cout << *it << std::endl;
 
 	// std::cout << it->first << std::endl;
@@ -80,8 +80,5 @@ int main()
 	// rb_three_print_desc<int>(three);
 	// rb_three_print_asc<int>(three);
 }
-
-
-// 'Node<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::RedBlackTree<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::less<ft::pair<const int, std::__cxx11::basic_string<char> > >, std::allocator<ft::pair<const int, std::__cxx11::basic_string<char> > > > > *'
-
-// 'const ft::Node<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::RedBlackTree<ft::pair<const int, std::__cxx11::basic_string<char> >, ft::less<ft::pair<const int, std::__cxx11::basic_string<char> > >, std::allocator<ft::pair<const int, std::__cxx11::basic_string<char> > > > > *'
+// ft::RedBlackTree<ft::pair<const char, int>, ft::less<char>, std::allocator<ft::pair<const char, int> > >::node_ptr
+// ft::LegacyBidirectionalIterator<ft::Node<ft::pair<const char, int>, ft::RedBlackTree<ft::pair<const char, int>, ft::less<char>, std::allocator<ft::pair<const char, int> > > >, true>::pointer

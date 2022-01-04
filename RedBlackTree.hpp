@@ -9,7 +9,8 @@ namespace ft
 		struct Node
 		{
 			typedef T 					value_type;
-			typedef Node<T, RBTree>*	node_ptr;
+			typedef Node<T, RBTree>		node_type;
+			typedef node_type*			node_ptr;
 
 			value_type					data;
 			node_ptr					parent;
@@ -20,17 +21,17 @@ namespace ft
 
 			Node(value_type key) : data(key), parent(NULL), color(1), ref(NULL) {}
 		};
-	template <typename T, class Compare = ft::less<T>, class Allocator = std::allocator<T> >
+	template <typename T, class Compare, class Allocator = std::allocator<T> >
 	class RedBlackTree
 	{
 		public:
-			typedef T value_type;
-			typedef Compare key_compare;
-			typedef Allocator allocator_type;
-			typedef size_t size_type;
-			typedef Node<T, RedBlackTree> node_type;
-			typedef typename node_type::node_ptr node_ptr;
-			typedef typename allocator_type::template rebind<node_type>::other allocator_node;
+			typedef T															value_type;
+			typedef Compare														key_compare;
+			typedef Allocator													allocator_type;
+			typedef size_t														size_type;
+			typedef Node<T, RedBlackTree>										node_type;
+			typedef typename node_type::node_ptr								node_ptr;
+			typedef typename allocator_type::template rebind<node_type>::other	allocator_node;
 		private:
 			node_ptr root;
 			node_ptr TNULL;
@@ -72,11 +73,11 @@ namespace ft
 			}
 			node_ptr searchTreeHelper(node_ptr node, value_type key)
 			{
-				if (node == TNULL || (!_comp(key, node->data) && !_comp(node->data, key)))
+				if (node == TNULL || (!_comp(key.first, node->data.first) && !_comp(node->data.first, key.first)))
 				{
 					return node;
 				}
-				if (_comp(key, node->data))
+				if (_comp(key.first, node->data.first))
 				{
 					return searchTreeHelper(node->left, key);
 				}
@@ -182,12 +183,12 @@ namespace ft
 				node_ptr x, y;
 				while (node != TNULL)
 				{
-					if ((!_comp(key, node->data) && !_comp(node->data, key)))
+					if ((!_comp(key.first, node->data.first) && !_comp(node->data.first, key.first)))
 					{
 						z = node;
 					}
 
-					if ((!_comp(key, node->data) && !_comp(node->data, key)) || _comp(node->data, key))
+					if ((!_comp(key.first, node->data.first) && !_comp(node->data.first, key.first)) || _comp(node->data.first, key.first))
 					{
 						node = node->right;
 					}
@@ -551,7 +552,7 @@ namespace ft
 				while (x != TNULL)
 				{
 					y = x;
-					if (_comp(node->data, x->data))
+					if (_comp(node->data.first, x->data.first))
 						x = x->left;
 					else
 						x = x->right;
@@ -562,7 +563,7 @@ namespace ft
 				{
 					root = node;
 				}
-				else if (_comp(node->data, y->data))
+				else if (_comp(node->data.first, y->data.first))
 				{
 					y->left = node;
 				}

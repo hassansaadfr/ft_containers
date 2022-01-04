@@ -22,12 +22,11 @@ namespace ft {
 			typedef typename Allocator::pointer													pointer;
 			typedef typename Allocator::const_pointer											const_pointer;
 
-			// typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>		Tree; // Dont work when i pass compare in template dont know why
-			typedef typename ft::RedBlackTree<value_type>										Tree;
+			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>				Tree;
 			typedef typename Tree::node_ptr														node_ptr;
 
-			typedef ft::LegacyBidirectionalIterator<Node<value_type, Tree >, false>				iterator;
-			typedef ft::LegacyBidirectionalIterator<Node<value_type, Tree >, true>				const_iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type, Tree >, false>			iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type, Tree >, true>			const_iterator;
 
 			typedef LegacyReverseBidirectionalIterator<iterator>								reverse_iterator;
 			typedef LegacyReverseBidirectionalIterator<const_iterator>							const_reverse_iterator;
@@ -133,9 +132,9 @@ namespace ft {
 				return res->first;
 
 				// iterator find = searchNode(k);
-                // if (find._M_node == _end)
-                //     find = insert(_root, ft::make_pair(k, mapped_type()));
-                // return find->second;
+				// if (find._M_node == _end)
+				//     find = insert(_root, ft::make_pair(k, mapped_type()));
+				// return find->second;
 			}
 
 		private:

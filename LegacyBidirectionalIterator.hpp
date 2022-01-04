@@ -20,8 +20,8 @@ namespace ft {
 			typedef std::ptrdiff_t																						difference_type;
 			typedef T																									value_type;
 			typedef typename ft::is_constant<is_constant, const typename T::value_type, typename T::value_type >::type	pair_type;
-			typedef typename ft::is_constant<is_constant, const value_type *, value_type * >::type						pointer;
-			typedef typename ft::is_constant<is_constant, const value_type &, value_type &>::type						reference;
+			typedef typename ft::is_constant<is_constant, const typename T::node_ptr , typename T::node_ptr >::type		pointer;
+			typedef typename ft::is_constant<is_constant, const typename T::node_type &, typename T::node_type &>::type	reference;
 			typedef ft::bidirectional_iterator_tag																		iterator_category;
 
 			/* Constructor */
@@ -61,7 +61,7 @@ namespace ft {
 			reference						operator[](difference_type rhs) { return *(_ptr + rhs); }
 			pointer							base(void) const { return _ptr; };
 		private:
-			pointer							_ptr;
+			pointer			_ptr;
 	};
 }
 
