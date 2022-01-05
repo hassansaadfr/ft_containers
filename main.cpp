@@ -37,7 +37,7 @@
 #include <map>
 
 
-namespace nm = ft;
+namespace nm = std;
 // template <typename T>
 // void	rb_three_print_desc(nm::RedBlackTree<T> three)
 // {
@@ -62,18 +62,16 @@ namespace nm = ft;
 
 int main()
 {
+
     nm::map<int, int> m;
-    m.insert(nm::make_pair(10,12));
-    m.insert(nm::make_pair(20,32));
 
-    m.print();
     nm::map<int, int>::iterator it = m.begin();
+    nm::map<int, int>::iterator ite = m.end();
 
-    for (; it != m.end(); it++)
+    for (; it != ite; ite--)
     {
-        std::cout << it->first << " " << it->second << std::endl;
+        std::cout << ite->first << " " << ite->second << std::endl;
     }
-
 
 	// nm::RedBlackTree<int> three;
 	// three.insert(100);

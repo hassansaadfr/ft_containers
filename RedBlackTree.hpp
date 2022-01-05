@@ -342,6 +342,7 @@ namespace ft
 				TNULL->color = 0;
 				TNULL->left = NULL;
 				TNULL->right = NULL;
+                TNULL->ref = this;
 				root = TNULL;
 			}
 			RedBlackTree(const RedBlackTree &x) : _alloc(x._alloc), _comp(x._comp)
@@ -564,9 +565,6 @@ namespace ft
 
             node_ptr successor(node_ptr x) const {
 
-                if (x == TNULL)
-                    return x;
-
                 if (x->right != TNULL) {
                     return minimum(x->right);
                 }
@@ -576,10 +574,14 @@ namespace ft
                     x = y;
                     y = y->parent;
                 }
-                return y;
+                return !y ? TNULL : y ;
             }
 
             node_ptr predecessor(node_ptr x) const {
+
+                if (x == TNULL)
+                    return (maximum(this->root));
+
                 if (x->left != TNULL) {
                     return maximum(x->left);
                 }
