@@ -29,7 +29,7 @@ namespace ft
 			typedef T															value_type;
 			typedef Compare														key_compare;
 			typedef Allocator													allocator_type;
-			typedef size_t														size_type;
+			typedef std::size_t													size_type;
 			typedef Node<T, RedBlackTree>										node_type;
 			typedef typename node_type::node_ptr								node_ptr;
 			typedef typename allocator_type::template rebind<node_type>::other	allocator_node;
@@ -204,6 +204,9 @@ namespace ft
 					std::cout << "Key not found in the tree" << std::endl;
 					return;
 				}
+
+                this->_size--;
+
 				if (z->left == TNULL && z->right == TNULL && z == root)
 				{
 					_alloc.destroy(z);
@@ -344,6 +347,7 @@ namespace ft
 				TNULL->right = NULL;
                 TNULL->ref = this;
 				root = TNULL;
+                _size = 0;
 			}
 			RedBlackTree(const RedBlackTree &x) : _alloc(x._alloc), _comp(x._comp)
 			{
@@ -484,15 +488,16 @@ namespace ft
 				node->right = TNULL;
 				node->color = 1;
                 node->ref = this;
-				if (!root)
-				{
-					TNULL = _alloc.allocate(1);
-					TNULL->color = 0;
-					TNULL->left = NULL;
-					TNULL->right = NULL;
-					root = TNULL;
-					return node;
-				}
+                this->_size++;
+//				if (!root)
+//				{
+//					TNULL = _alloc.allocate(1);
+//					TNULL->color = 0;
+//					TNULL->left = NULL;
+//					TNULL->right = NULL;
+//					root = TNULL;
+//					return node;
+//				}
 				node_ptr y = NULL;
 				node_ptr x = this->root;
 
@@ -546,15 +551,13 @@ namespace ft
 			void printTree()
 			{
 				if (root)
-				{
 					printHelper(this->root, "", true);
-				}
 			}
 
             node_ptr minimum(node_ptr node) const {
-                while (node->left != TNULL)
+                while (node && node->left != TNULL)
                     node = node->left;
-                return node;
+                return !node ? TNULL : node;
             }
 
             node_ptr maximum(node_ptr node) const {
@@ -599,6 +602,10 @@ namespace ft
 
             node_ptr getEnd() const {
                 return this->TNULL;
+            }
+
+            size_type getSize() const {
+                return this->_size;
             }
 	};
 }

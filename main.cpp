@@ -36,42 +36,30 @@
 #include <iostream>
 #include <map>
 
-
-namespace nm = std;
-// template <typename T>
-// void	rb_three_print_desc(nm::RedBlackTree<T> three)
-// {
-// 	ft::RedBlackTree<int>::node_ptr max = three.maximum(three.getRoot());
-// 	while (max != NULL)
-// 	{
-// 		std::cout << max->data << std::endl;
-// 		max = three.predecessor(max);
-// 	}
-// }
-
-// template <typename T>
-// void	rb_three_print_asc(nm::RedBlackTree<T> three)
-// {
-// 	ft::RedBlackTree<int>::node_ptr min = three.minimum(three.getRoot());
-// 	while (min != NULL)
-// 	{
-// 		std::cout << min->data << std::endl;
-// 		min = three.successor(min);
-// 	}
-// }
+namespace nm = ft;
 
 int main()
 {
 
     nm::map<int, int> m;
 
+    std::cout << m.size() << std::endl;
+    m.insert(nm::make_pair(1, 1));
+    std::cout << m.size() << std::endl;
+    m.insert(nm::make_pair(2, 2));
+    std::cout << m.size() << std::endl;
+    m.insert(nm::make_pair(3, 3));
+    std::cout << m.size() << std::endl;
+
     nm::map<int, int>::iterator it = m.begin();
     nm::map<int, int>::iterator ite = m.end();
 
-    for (; it != ite; ite--)
+    for (; it != ite; it++)
     {
-        std::cout << ite->first << " " << ite->second << std::endl;
+        std::cout << it->first << " " << it->second << std::endl;
     }
+//
+//    std::cout << ite->first << " " << ite->second << std::endl;
 
 	// nm::RedBlackTree<int> three;
 	// three.insert(100);

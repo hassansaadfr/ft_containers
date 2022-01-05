@@ -40,11 +40,11 @@ namespace ft {
 					value_compare(Compare c) : comp(c) {}
 			};
 			/* Constructors */
-			map(): _alloc(Allocator()), _comp(Compare()), _size(0)
+			map(): _alloc(Allocator()), _comp(Compare())
 			{
 				// _bst.insert(value_type());
 			};
-			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc), _size(0)
+			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc)
 			{
 				// _bst.insert(value_type());
 			};
@@ -54,7 +54,6 @@ namespace ft {
 				while (it != NULL)
 				{
 					_bst.insert(*it);
-					_size++;
 					it++;
 				}
 			}
@@ -70,7 +69,6 @@ namespace ft {
 				{
 					_bst.insert(*first);
 					first++;
-					_size++;
 				}
 			}
 
@@ -102,7 +100,7 @@ namespace ft {
 
 			void clear()
 			{
-				_size = 0;
+//				_size = 0;
 			}
 
 
@@ -110,9 +108,9 @@ namespace ft {
 			void print() { _bst.printTree(); };
 
 			allocator_type get_allocator() const { return _alloc; };
-			bool empty() const { return _size == 0; };
-			size_type size() const { return _size; };
+			size_type size() const { return _bst.getSize(); };
 			size_type max_size() const { return _alloc.max_size(); };
+            bool empty() const { return size() == 0; };
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
 			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
@@ -142,7 +140,6 @@ namespace ft {
 			Tree						_bst;
 			allocator_type									_alloc;
 			Compare											_comp;
-			size_type										_size;
 
 	};
 }
