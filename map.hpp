@@ -116,7 +116,7 @@ namespace ft {
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
 			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
-			iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
+			iterator end() { return iterator(_bst.getEnd()); };
 			const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
 
 			reverse_iterator		rbegin() { return reverse_iterator(end()); };

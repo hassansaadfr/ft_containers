@@ -563,6 +563,10 @@ namespace ft
             }
 
             node_ptr successor(node_ptr x) const {
+
+                if (x == TNULL)
+                    return x;
+
                 if (x->right != TNULL) {
                     return minimum(x->right);
                 }
