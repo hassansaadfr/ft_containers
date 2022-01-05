@@ -25,8 +25,8 @@ namespace ft {
 			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>				Tree;
 			typedef typename Tree::node_ptr														node_ptr;
 
-			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type >, false>			iterator;
-			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type >, true>			const_iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type, Tree>, false>			iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type, Tree>, true>			const_iterator;
 
 			typedef LegacyReverseBidirectionalIterator<iterator>								reverse_iterator;
 			typedef LegacyReverseBidirectionalIterator<const_iterator>							const_reverse_iterator;
@@ -114,13 +114,13 @@ namespace ft {
 			size_type size() const { return _size; };
 			size_type max_size() const { return _alloc.max_size(); };
 
-			iterator begin() { return iterator((_bst.getRoot()->minimum(_bst.getRoot()))); };
-			const_iterator begin() const { return const_iterator(_bst.getRoot()->minimum(_bst.getRoot())); };
-			iterator end() { return iterator(_bst.getRoot()->maximum(_bst.getRoot())); };
-			const_iterator end() const { return const_iterator(_bst.getRoot()->maximum(_bst.getRoot())); };
+			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
+			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
+			iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
+			const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
 
-			reverse_iterator		rbegin() { return reverse_iterator(_bst.getRoot()->maximum(_bst.getRoot())); };
-			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_bst.getRoot()->maximum(_bst.getRoot())); };
+			reverse_iterator		rbegin() { return reverse_iterator(end()); };
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); };
 			reverse_iterator		rend() { return reverse_iterator(begin()); };
 			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); };
 

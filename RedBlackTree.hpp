@@ -5,11 +5,11 @@
 
 namespace ft
 {
-		template <typename T >
+		template <typename T, class TreeRef>
 		struct Node
 		{
 			typedef T 					value_type;
-			typedef Node<T>				node_type;
+			typedef Node				node_type;
 			typedef node_type*			node_ptr;
 
 			value_type					data;
@@ -17,65 +17,10 @@ namespace ft
 			node_ptr					left;
 			node_ptr					right;
 			int							color;
-			node_ptr					TNULL;
-			node_ptr					root;
 
-			Node(value_type key) : data(key), parent(NULL), color(1), TNULL(NULL), root(NULL) {}
+            TreeRef *ref;
 
-			node_ptr minimum(node_ptr node) const
-			{
-				if (root == TNULL)
-					return NULL;
-				while (node->left != TNULL)
-				{
-					node = node->left;
-				}
-				return node;
-			}
-
-			node_ptr maximum(node_ptr node) const
-			{
-				while (node->right != TNULL)
-				{
-					node = node->right;
-				}
-				return node;
-			}
-
-			node_ptr successor(node_ptr x) const
-			{
-				if (x->right != TNULL)
-				{
-					return minimum(x->right);
-				}
-
-				node_ptr y = x->parent;
-				while (y && x && y != TNULL && x == y->right)
-				{
-					x = y;
-					y = y->parent;
-				}
-				return y;
-			}
-
-			node_ptr predecessor(node_ptr x) const
-			{
-				if (x->left != TNULL)
-				{
-					return maximum(x->left);
-				}
-
-				node_ptr y = x->parent;
-				while (y != TNULL && x == y->left)
-				{
-					x = y;
-					if (y->parent == NULL)
-						return NULL;
-					y = y->parent;
-				}
-
-				return y;
-			}
+			Node(value_type key) : data(key), parent(NULL), color(1), ref(NULL) {}
 		};
 	template <typename T, class Compare, class Allocator = std::allocator<T> >
 	class RedBlackTree
@@ -85,7 +30,7 @@ namespace ft
 			typedef Compare														key_compare;
 			typedef Allocator													allocator_type;
 			typedef size_t														size_type;
-			typedef Node<T>														node_type;
+			typedef Node<T, RedBlackTree>										node_type;
 			typedef typename node_type::node_ptr								node_ptr;
 			typedef typename allocator_type::template rebind<node_type>::other	allocator_node;
 		private:
@@ -537,8 +482,7 @@ namespace ft
 				node->left = TNULL;
 				node->right = TNULL;
 				node->color = 1;
-				node->root = root;
-				node->TNULL = TNULL;
+                node->ref = this;
 				if (!root)
 				{
 					TNULL = _alloc.allocate(1);
@@ -605,6 +549,51 @@ namespace ft
 					printHelper(this->root, "", true);
 				}
 			}
+
+            node_ptr minimum(node_ptr node) const {
+                while (node->left != TNULL) {
+                    node = node->left;
+                }
+                if (node->parent && node->parent != TNULL)
+                    return node->parent;
+                return node;
+            }
+
+            node_ptr maximum(node_ptr node) const {
+                while (node->right != TNULL) {
+                    node = node->right;
+                }
+                return node;
+            }
+
+            node_ptr successor(node_ptr x) const {
+                if (x->right != TNULL) {
+                    return minimum(x->right);
+                }
+
+                node_ptr y = x->parent;
+                while (y && x && y != TNULL && x == y->right) {
+                    x = y;
+                    y = y->parent;
+                }
+                return y;
+            }
+
+            node_ptr predecessor(node_ptr x) const {
+                if (x->left != TNULL) {
+                    return maximum(x->left);
+                }
+
+                node_ptr y = x->parent;
+                while (y != TNULL && x == y->left) {
+                    x = y;
+                    if (y->parent == NULL)
+                        return NULL;
+                    y = y->parent;
+                }
+
+                return y;
+            }
 	};
 }
 #endif

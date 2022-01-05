@@ -51,8 +51,8 @@ namespace ft {
 			bool							operator>=(LegacyBidirectionalIterator const &rhs) const { return (_ptr >= rhs._ptr); };
 
 			/* Increment Decrement Part */
-			LegacyBidirectionalIterator&	operator++(void) { _ptr = _ptr->successor(_ptr); return *this; }
-			LegacyBidirectionalIterator&	operator--(void) { _ptr = _ptr->predecessor(_ptr); return *this; }
+			LegacyBidirectionalIterator&	operator++(void) { _ptr = _ptr->ref->successor(_ptr); return *this; }
+			LegacyBidirectionalIterator&	operator--(void) { _ptr = _ptr->ref->predecessor(_ptr); return *this; }
 			LegacyBidirectionalIterator		operator++(int) { LegacyBidirectionalIterator	old = *this; operator++(); return old; }
 			LegacyBidirectionalIterator		operator--(int) { LegacyBidirectionalIterator	old = *this; operator--(); return old; }
 			pair_type&						operator*(void) const { return (_ptr->data); }
@@ -69,10 +69,6 @@ template <typename T>
 bool					operator!=(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return lhs.base() != rhs.base(); }
 template <typename T>
 bool					operator==(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() == rhs.base()); };
-// template<typename T>
-// ft::LegacyBidirectionalIterator<T, false>	operator+(typename ft::LegacyBidirectionalIterator<T, false>::difference_type offset, ft::LegacyBidirectionalIterator<T, false> & rhs) { return (ft::LegacyBidirectionalIterator<T, false>(rhs.base() + offset)); }
-// template<typename T>
-// ft::LegacyBidirectionalIterator<T, false>	operator-(typename ft::LegacyBidirectionalIterator<T, false>::difference_type offset, ft::LegacyBidirectionalIterator<T, false> & rhs) { return (ft::LegacyBidirectionalIterator<T, false>(rhs.base() - offset)); }
 template <typename T>
 bool					operator<(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() < rhs.base()); };
 template <typename T>
@@ -81,4 +77,11 @@ template <typename T>
 bool					operator<=(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() <= rhs.base()); };
 template <typename T>
 bool					operator>=(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() >= rhs.base()); };
+
+// template<typename T>
+// ft::LegacyBidirectionalIterator<T, false>	operator+(typename ft::LegacyBidirectionalIterator<T, false>::difference_type offset, ft::LegacyBidirectionalIterator<T, false> & rhs) { return (ft::LegacyBidirectionalIterator<T, false>(rhs.base() + offset)); }
+// template<typename T>
+// ft::LegacyBidirectionalIterator<T, false>	operator-(typename ft::LegacyBidirectionalIterator<T, false>::difference_type offset, ft::LegacyBidirectionalIterator<T, false> & rhs) { return (ft::LegacyBidirectionalIterator<T, false>(rhs.base() - offset)); }
+
+
 #endif
