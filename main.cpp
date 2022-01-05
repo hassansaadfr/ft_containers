@@ -63,13 +63,26 @@ namespace nm = ft;
 int main()
 {
     nm::map<int, int> m;
-    m.insert(ft::make_pair(10,12));
-    m.insert(ft::make_pair(20,32));
-    m.insert(ft::make_pair(42,34));
+    m.insert(nm::make_pair(10,12));
+    m.insert(nm::make_pair(20,32));
+    m.insert(nm::make_pair(42,34));
+    m.insert(nm::make_pair(30,23));
+    m.insert(nm::make_pair(40,43));
+    m.insert(nm::make_pair(50,53));
+    m.insert(nm::make_pair(60,63));
+    m.insert(nm::make_pair(70,73));
+    m.insert(nm::make_pair(80,83));
+    m.insert(nm::make_pair(90,93));
+    m.insert(nm::make_pair(100,103));
+
     m.print();
     nm::map<int, int>::iterator it = m.begin();
 
-    std::cout << it->first << std::endl;
+    for (; it != m.end(); it++)
+    {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
+
 
 	// nm::RedBlackTree<int> three;
 	// three.insert(100);

@@ -20,7 +20,7 @@ namespace ft
 
             TreeRef *ref;
 
-			Node(value_type key) : data(key), parent(NULL), color(1), ref(NULL) {}
+			Node(value_type key = value_type()) : data(key), parent(NULL), color(1), ref(NULL) {}
 		};
 	template <typename T, class Compare, class Allocator = std::allocator<T> >
 	class RedBlackTree
@@ -551,18 +551,14 @@ namespace ft
 			}
 
             node_ptr minimum(node_ptr node) const {
-                while (node->left != TNULL) {
+                while (node->left != TNULL)
                     node = node->left;
-                }
-                if (node->parent && node->parent != TNULL)
-                    return node->parent;
                 return node;
             }
 
             node_ptr maximum(node_ptr node) const {
-                while (node->right != TNULL) {
+                while (node->right != TNULL)
                     node = node->right;
-                }
                 return node;
             }
 
@@ -593,6 +589,10 @@ namespace ft
                 }
 
                 return y;
+            }
+
+            node_ptr getEnd() const {
+                return this->TNULL;
             }
 	};
 }
