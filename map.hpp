@@ -48,14 +48,14 @@ namespace ft {
 			{
 				// _bst.insert(value_type());
 			};
-			map(const map& other): _alloc(other._alloc), _comp(other._comp)
+			map(const map& other): _bst(other._bst), _alloc(other._alloc), _comp(other._comp)
 			{
-				iterator it = other.begin();
-				while (it != NULL)
-				{
-					_bst.insert(*it);
-					it++;
-				}
+				// iterator it = other.begin();
+				// while (it != other.end())
+				// {
+				// 	_bst.insert(*it);
+				// 	it++;
+				// }
 			}
 
 			~map() {};
@@ -100,9 +100,8 @@ namespace ft {
 
 			void clear()
 			{
-//				_size = 0;
+				_bst.clear();
 			}
-
 
 			// TEMPORARY
 			void print() { _bst.printTree(); };
@@ -128,18 +127,12 @@ namespace ft {
 				if (res.second == false)
 					return (insert(ft::make_pair(k, mapped_type())).first);
 				return res->first;
-
-				// iterator find = searchNode(k);
-				// if (find._M_node == _end)
-				//     find = insert(_root, ft::make_pair(k, mapped_type()));
-				// return find->second;
 			}
 
 		private:
-			// RedBlackTree<value_type, Compare, allocator_type>	_bst;
-			Tree						_bst;
-			allocator_type									_alloc;
-			Compare											_comp;
+			Tree			_bst;
+			allocator_type	_alloc;
+			Compare			_comp;
 
 	};
 }

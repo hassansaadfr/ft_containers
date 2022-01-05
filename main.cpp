@@ -68,5 +68,3 @@ int main()
 	// rb_three_print_desc<int>(three);
 	// rb_three_print_asc<int>(three);
 }
-// ft::RedBlackTree<ft::pair<const char, int>, ft::less<char>, std::allocator<ft::pair<const char, int> > >::node_ptr
-// ft::LegacyBidirectionalIterator<ft::Node<ft::pair<const char, int>, ft::RedBlackTree<ft::pair<const char, int>, ft::less<char>, std::allocator<ft::pair<const char, int> > > >, true>::pointer

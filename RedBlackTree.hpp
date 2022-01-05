@@ -357,7 +357,7 @@ namespace ft
 				TNULL->right = NULL;
 				root = TNULL;
 				node_ptr min = x.minimum(x.getRoot());
-				while (min != NULL)
+				while (min != x.getEnd())
 				{
 					insert(min->data);
 					min = x.successor(min);
@@ -370,18 +370,22 @@ namespace ft
 			}
 			~RedBlackTree()
 			{
+				clear();
+			}
+			void		clear()
+			{
 				if (root && root != TNULL)
 					destroy(root);
 				_alloc.deallocate(TNULL, 1);
+				_size = 0;
 			}
-
 			RedBlackTree &operator=(RedBlackTree const &src)
 			{
 				if (this == &src)
 					return *this;
 
 				node_ptr min = src.minimum(src.getRoot());
-				while (min != NULL)
+				while (min != src.getEnd())
 				{
 					this->insert(min->data);
 					min = src.successor(min);
