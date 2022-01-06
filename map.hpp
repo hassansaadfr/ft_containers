@@ -114,11 +114,7 @@ namespace ft {
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
 			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
 			iterator end() { return iterator(_bst.getEnd()); };
-			const_iterator end() const
-			{
-				// node_ptr root = _bst.getRoot();
-				return const_iterator(_bst.getEnd());
-			};
+			const_iterator end() const { return const_iterator(_bst.getEnd()); };
 
 			reverse_iterator		rbegin() { return reverse_iterator(end()); };
 			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); };
@@ -127,15 +123,27 @@ namespace ft {
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				node_ptr res = _bst.search_node(k);
-				if (res.second == false)
-					return (insert(ft::make_pair(k, mapped_type())).first);
-				return res->first;
+				iterator tmp = this->find(k);
+
+				if (tmp == _bst.getEnd())
+					this->insert(ft::make_pair(k, mapped_type()));
+				tmp = this->find(k);
+				return ((*tmp).second);
 			}
 
 			key_compare key_comp() const { return _comp; }
 			value_compare value_comp() const { return value_compare(_comp); }
 
+			iterator find(const key_type& k)
+			{
+				ft::pair<node_ptr, bool> searchResult = _bst.search_node(ft::make_pair(k, T()));
+				return (iterator(searchResult.first));
+			}
+			const_iterator find (const key_type& k) const
+			{
+				ft::pair<node_ptr, bool> searchResult = _bst.search_node(ft::make_pair(k, T()));
+				return (const_iterator(searchResult.first));
+			}
 		private:
 			Tree			_bst;
 			allocator_type	_alloc;
