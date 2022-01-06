@@ -109,12 +109,16 @@ namespace ft {
 			allocator_type get_allocator() const { return _alloc; };
 			size_type size() const { return _bst.getSize(); };
 			size_type max_size() const { return _alloc.max_size(); };
-            bool empty() const { return size() == 0; };
+			bool empty() const { return size() == 0; };
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
 			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
 			iterator end() { return iterator(_bst.getEnd()); };
-			const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
+			const_iterator end() const
+			{
+				// node_ptr root = _bst.getRoot();
+				return const_iterator(_bst.getEnd());
+			};
 
 			reverse_iterator		rbegin() { return reverse_iterator(end()); };
 			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); };
@@ -128,6 +132,9 @@ namespace ft {
 					return (insert(ft::make_pair(k, mapped_type())).first);
 				return res->first;
 			}
+
+			key_compare key_comp() const { return _comp; }
+			value_compare value_comp() const { return value_compare(_comp); }
 
 		private:
 			Tree			_bst;

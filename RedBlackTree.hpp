@@ -22,7 +22,7 @@ namespace ft
 
 			Node(value_type key = value_type()) : data(key), parent(NULL), color(1), ref(NULL) {}
 		};
-	template <typename T, class Compare, class Allocator = std::allocator<T> >
+	template <typename T, class Compare = ft::less<typename T::first_type>, class Allocator = std::allocator<T> >
 	class RedBlackTree
 	{
 		public:
@@ -337,7 +337,6 @@ namespace ft
 					printHelper(root->right, indent, true);
 				}
 			}
-
 		public:
 			RedBlackTree(const key_compare &comp = key_compare()) : _alloc(allocator_node()), _comp(comp)
 			{
@@ -355,29 +354,29 @@ namespace ft
 				TNULL->color = 0;
 				TNULL->left = NULL;
 				TNULL->right = NULL;
+				TNULL->ref = this;
 				root = TNULL;
+				_size = 0;
 				node_ptr min = x.minimum(x.getRoot());
 				while (min != x.getEnd())
 				{
 					insert(min->data);
 					min = x.successor(min);
 				}
-				// TNULL = _alloc.allocate(1);
-				// TNULL->color = x.color;
-				// TNULL->left = NULL;
-				// TNULL->right = NULL;
-				// root = TNULL;
+				_size = x.getSize();
 			}
 			~RedBlackTree()
 			{
 				clear();
+				_alloc.deallocate(TNULL, 1);
 			}
 			void		clear()
 			{
 				if (root && root != TNULL)
 					destroy(root);
-				_alloc.deallocate(TNULL, 1);
+				// _alloc.deallocate(TNULL, 1);
 				_size = 0;
+
 			}
 			RedBlackTree &operator=(RedBlackTree const &src)
 			{
@@ -493,15 +492,6 @@ namespace ft
 				node->color = 1;
                 node->ref = this;
                 this->_size++;
-//				if (!root)
-//				{
-//					TNULL = _alloc.allocate(1);
-//					TNULL->color = 0;
-//					TNULL->left = NULL;
-//					TNULL->right = NULL;
-//					root = TNULL;
-//					return node;
-//				}
 				node_ptr y = NULL;
 				node_ptr x = this->root;
 
@@ -571,7 +561,8 @@ namespace ft
             }
 
             node_ptr successor(node_ptr x) const {
-
+                if (x == TNULL)
+                    return (minimum(this->root));
                 if (x->right != TNULL) {
                     return minimum(x->right);
                 }
