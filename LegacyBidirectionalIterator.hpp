@@ -22,7 +22,7 @@ namespace ft {
 			typedef typename T::node_ptr																				node_ptr;
 			typedef typename ft::is_constant<is_constant, const typename T::value_type, typename T::value_type >::type	pair_type;
 			typedef typename ft::is_constant<is_constant, const typename T::node_ptr, typename T::node_ptr >::type		pointer;
-			typedef typename ft::is_constant<is_constant, const value_type &, T &>::type								reference;
+			typedef typename ft::is_constant<is_constant, const typename T::node_type &, typename T::node_type &>::type							reference;
 			typedef ft::bidirectional_iterator_tag																		iterator_category;
 
 			/* Constructor */
@@ -45,6 +45,7 @@ namespace ft {
 				if (this != &rhs)
 				{
 					this->_ptr = rhs.base();
+					this->_last = rhs.end();
 				}
 				return *this;
 			}
@@ -125,17 +126,17 @@ namespace ft {
 	};
 }
 
-// template <typename T>
-// bool					operator!=(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return lhs.base() != rhs.base(); }
-// template <typename T>
-// bool					operator==(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() == rhs.base()); };
-// template <typename T>
-// bool					operator<(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() < rhs.base()); };
-// template <typename T>
-// bool					operator>(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() > rhs.base()); };
-// template <typename T>
-// bool					operator<=(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() <= rhs.base()); };
-// template <typename T>
-// bool					operator>=(const ft::LegacyBidirectionalIterator<T, false>& lhs, const ft::LegacyBidirectionalIterator<T, true>& rhs) { return (lhs.base() >= rhs.base()); };
+template <typename T, class Compare>
+bool					operator!=(const ft::LegacyBidirectionalIterator<T, false , Compare>& lhs, const ft::LegacyBidirectionalIterator<T, true , Compare>& rhs) { return lhs.base() != rhs.base(); }
+template <typename T, class Compare>
+bool					operator==(const ft::LegacyBidirectionalIterator<T, false , Compare>& lhs, const ft::LegacyBidirectionalIterator<T, true , Compare>& rhs) { return (lhs.base() == rhs.base()); };
+template <typename T, class Compare>
+bool					operator<(const ft::LegacyBidirectionalIterator<T, false , Compare>& lhs, const ft::LegacyBidirectionalIterator<T, true , Compare>& rhs) { return (lhs.base() < rhs.base()); };
+template <typename T, class Compare>
+bool					operator>(const ft::LegacyBidirectionalIterator<T, false , Compare>& lhs, const ft::LegacyBidirectionalIterator<T, true , Compare>& rhs) { return (lhs.base() > rhs.base()); };
+template <typename T, class Compare>
+bool					operator<=(const ft::LegacyBidirectionalIterator<T, false , Compare>& lhs, const ft::LegacyBidirectionalIterator<T, true , Compare>& rhs) { return (lhs.base() <= rhs.base()); };
+template <typename T, class Compare>
+bool					operator>=(const ft::LegacyBidirectionalIterator<T, false , Compare>& lhs, const ft::LegacyBidirectionalIterator<T, true , Compare>& rhs) { return (lhs.base() >= rhs.base()); };
 
 #endif

@@ -15,10 +15,11 @@ int main()
     {
         m.insert(ft::make_pair(i,i));
     }
-    // nm::map<int, int>::iterator it = m.begin();
+    std::map<int> z;
+    nm::map<int, int>::iterator it = m.begin();
     // it++;
     // it++;
-    // it++;
-    // it++;
+    it++;
     std::cout << m.max_size() << std::endl;
+    m.clear();
 }

@@ -47,6 +47,7 @@ namespace ft {
 			map(const map& other): _alloc(other._alloc), _comp(other._comp)
 			{
 				iterator it = other.begin();
+				_bst.clear();
 				while (it != other.end())
 				{
 					_bst.insert(*it);
@@ -62,12 +63,6 @@ namespace ft {
 				_comp = comp;
 				_alloc = alloc;
 				insert(first, last);
-				// while (first != last)
-				// {
-				// 	std::cout << first->first << std::endl;
-				// 	_bst.insert(*first);
-				// 	first++;
-				// }
 			}
 
 			iterator insert ( iterator hint, const value_type& value )
@@ -81,7 +76,7 @@ namespace ft {
 			{
 				while (first != last)
 				{
-					_bst.insert(*first);
+					this->insert(*first);
 					first++;
 				}
 			}
@@ -106,7 +101,7 @@ namespace ft {
 
 			allocator_type get_allocator() const { return _alloc; };
 			size_type size() const { return _bst.getSize(); };
-			size_type max_size() const { return _alloc.max_size(); };
+			size_type max_size() const { return _bst.max_size(); };
 			bool empty() const { return size() == 0; };
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot())), _bst.getEnd()); };
@@ -123,7 +118,7 @@ namespace ft {
 			{
 				iterator tmp = this->find(k);
 
-				if (tmp == _bst.getEnd())
+				if (tmp.base() == _bst.getEnd())
 					this->insert(ft::make_pair(k, mapped_type()));
 				tmp = this->find(k);
 				return ((*tmp).second);
@@ -135,12 +130,16 @@ namespace ft {
 			iterator find(const key_type& k)
 			{
 				ft::pair<node_ptr, bool> searchResult = _bst.search_node(ft::make_pair(k, T()));
-				return (iterator(searchResult.first));
+				return (iterator(searchResult.first, _bst.getEnd()));
 			}
 			const_iterator find (const key_type& k) const
 			{
 				ft::pair<node_ptr, bool> searchResult = _bst.search_node(ft::make_pair(k, T()));
-				return (const_iterator(searchResult.first));
+				return (const_iterator(searchResult.first, _bst.getEnd()));
+			}
+			size_type count( const Key& key ) const
+			{
+				return (_bst.search_node(ft::make_pair(key, T())).second);
 			}
 		private:
 			Tree			_bst;

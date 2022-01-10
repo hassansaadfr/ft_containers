@@ -18,7 +18,6 @@ namespace ft
 			node_ptr					right;
 			int							color;
 
-
 			Node(value_type key = value_type()) : data(key), parent(NULL), color(1) {}
 		};
 	template <typename T, class Compare = ft::less<typename T::first_type>, class Allocator = std::allocator<Node<T> > >
@@ -71,7 +70,7 @@ namespace ft
 					std::cout << node->data << " ";
 				}
 			}
-			node_ptr searchTreeHelper(node_ptr node, value_type key)
+			node_ptr searchTreeHelper(node_ptr node, value_type key) const
 			{
 				if (node == TNULL || (!_comp(key.first, node->data.first) && !_comp(node->data.first, key.first)))
 				{
@@ -369,8 +368,9 @@ namespace ft
 			}
 			void		clear()
 			{
-				// if (root && root != TNULL)
+				if (root && root != TNULL)
 				destroy(root);
+				root = TNULL;
 				// _alloc.deallocate(TNULL, 1);
 				_size = 0;
 
@@ -400,6 +400,7 @@ namespace ft
 					destroy(x->right);
 				}
 				_alloc.deallocate(x, 1);
+				x = TNULL;
 			}
 
 			void preorder()
@@ -417,17 +418,18 @@ namespace ft
 				postOrderHelper(this->root);
 			}
 
-			node_ptr searchTree(value_type k)
+			node_ptr searchTree(value_type k) const
 			{
 				return searchTreeHelper(this->root, k);
 			}
 
-			ft::pair<node_ptr, bool> search_node(value_type k)
+			ft::pair<node_ptr, bool> search_node(value_type k) const
 			{
 				node_ptr elem = searchTree(k);
 				bool found = elem != TNULL;
 				return ft::make_pair(elem, found);
 			}
+			size_type max_size() const { return _alloc.max_size(); };
 
 			void leftRotate(node_ptr x)
 			{
