@@ -25,8 +25,8 @@ namespace ft {
 			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>				Tree;
 			typedef typename Tree::node_ptr														node_ptr;
 
-			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type, Tree>, false>			iterator;
-			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type, Tree>, true>			const_iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type>, false, Compare>		iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type>, true, Compare>		const_iterator;
 
 			typedef LegacyReverseBidirectionalIterator<iterator>								reverse_iterator;
 			typedef LegacyReverseBidirectionalIterator<const_iterator>							const_reverse_iterator;
@@ -41,21 +41,17 @@ namespace ft {
 			};
 			/* Constructors */
 			map(): _alloc(Allocator()), _comp(Compare())
-			{
-				// _bst.insert(value_type());
-			};
+			{};
 			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc)
+			{};
+			map(const map& other): _alloc(other._alloc), _comp(other._comp)
 			{
-				// _bst.insert(value_type());
-			};
-			map(const map& other): _bst(other._bst), _alloc(other._alloc), _comp(other._comp)
-			{
-				// iterator it = other.begin();
-				// while (it != other.end())
-				// {
-				// 	_bst.insert(*it);
-				// 	it++;
-				// }
+				iterator it = other.begin();
+				while (it != other.end())
+				{
+					_bst.insert(*it);
+					it++;
+				}
 			}
 
 			~map() {};
@@ -65,21 +61,23 @@ namespace ft {
 			{
 				_comp = comp;
 				_alloc = alloc;
-				while (first != last)
-				{
-					_bst.insert(*first);
-					first++;
-				}
+				insert(first, last);
+				// while (first != last)
+				// {
+				// 	std::cout << first->first << std::endl;
+				// 	_bst.insert(*first);
+				// 	first++;
+				// }
 			}
 
-			iterator insert( iterator hint, const value_type& value )
+			iterator insert ( iterator hint, const value_type& value )
 			{
 				(void)hint;
-				return _bst.insert(value);
+				return iterator(_bst.insert(value), _bst.getEnd());
 			}
 
 			template< class InputIt >
-			void insert( InputIt first, InputIt last )
+			void insert ( InputIt first, InputIt last )
 			{
 				while (first != last)
 				{
@@ -88,14 +86,14 @@ namespace ft {
 				}
 			}
 
-			ft::pair<iterator, bool>	insert( const value_type& value )
+			ft::pair<iterator, bool>	insert ( const value_type& value )
 			{
 				ft::pair<node_ptr, bool> searchResult = _bst.search_node(value);
 				if (searchResult.second == false)
 				{
-					return (ft::make_pair(_bst.insert(value), true));
+					return (ft::make_pair(iterator(_bst.insert(value), _bst.getEnd()), true));
 				}
-				return ft::make_pair(searchResult.first, false);
+				return ft::make_pair(iterator(searchResult.first, _bst.getEnd()), false);
 			}
 
 			void clear()
@@ -111,10 +109,10 @@ namespace ft {
 			size_type max_size() const { return _alloc.max_size(); };
 			bool empty() const { return size() == 0; };
 
-			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
-			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
-			iterator end() { return iterator(_bst.getEnd()); };
-			const_iterator end() const { return const_iterator(_bst.getEnd()); };
+			iterator begin() { return iterator((_bst.minimum(_bst.getRoot())), _bst.getEnd()); };
+			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot()), _bst.getEnd()); };
+			iterator end() { return iterator(_bst.getEnd(), _bst.getEnd()); };
+			const_iterator end() const { return const_iterator(_bst.getEnd(), _bst.getEnd()); };
 
 			reverse_iterator		rbegin() { return reverse_iterator(end()); };
 			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); };

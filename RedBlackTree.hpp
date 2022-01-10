@@ -5,7 +5,7 @@
 
 namespace ft
 {
-		template <typename T, class TreeRef>
+		template <typename T>
 		struct Node
 		{
 			typedef T 					value_type;
@@ -18,11 +18,10 @@ namespace ft
 			node_ptr					right;
 			int							color;
 
-            TreeRef *ref;
 
-			Node(value_type key = value_type()) : data(key), parent(NULL), color(1), ref(NULL) {}
+			Node(value_type key = value_type()) : data(key), parent(NULL), color(1) {}
 		};
-	template <typename T, class Compare = ft::less<typename T::first_type>, class Allocator = std::allocator<T> >
+	template <typename T, class Compare = ft::less<typename T::first_type>, class Allocator = std::allocator<Node<T> > >
 	class RedBlackTree
 	{
 		public:
@@ -30,7 +29,7 @@ namespace ft
 			typedef Compare														key_compare;
 			typedef Allocator													allocator_type;
 			typedef std::size_t													size_type;
-			typedef Node<T, RedBlackTree>										node_type;
+			typedef Node<T>														node_type;
 			typedef typename node_type::node_ptr								node_ptr;
 			typedef typename allocator_type::template rebind<node_type>::other	allocator_node;
 		private:
@@ -201,7 +200,6 @@ namespace ft
 
 				if (z == TNULL)
 				{
-					std::cout << "Key not found in the tree" << std::endl;
 					return;
 				}
 
@@ -344,7 +342,6 @@ namespace ft
 				TNULL->color = 0;
 				TNULL->left = NULL;
 				TNULL->right = NULL;
-                TNULL->ref = this;
 				root = TNULL;
                 _size = 0;
 			}
@@ -354,7 +351,6 @@ namespace ft
 				TNULL->color = 0;
 				TNULL->left = NULL;
 				TNULL->right = NULL;
-				TNULL->ref = this;
 				root = TNULL;
 				_size = 0;
 				node_ptr min = x.minimum(x.getRoot());
@@ -367,13 +363,14 @@ namespace ft
 			}
 			~RedBlackTree()
 			{
-				clear();
+				if (_size > 0)
+					clear();
 				_alloc.deallocate(TNULL, 1);
 			}
 			void		clear()
 			{
-				if (root && root != TNULL)
-					destroy(root);
+				// if (root && root != TNULL)
+				destroy(root);
 				// _alloc.deallocate(TNULL, 1);
 				_size = 0;
 
@@ -490,7 +487,6 @@ namespace ft
 				node->left = TNULL;
 				node->right = TNULL;
 				node->color = 1;
-                node->ref = this;
                 this->_size++;
 				node_ptr y = NULL;
 				node_ptr x = this->root;

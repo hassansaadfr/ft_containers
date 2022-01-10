@@ -11,11 +11,14 @@ int main()
 {
 
     nm::map<int, int> m;
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 1; i < 10; i++)
     {
         m.insert(ft::make_pair(i,i));
     }
-    nm::map<int, int>::const_iterator it = m.begin();
-    it++;
-    std::cout << (*it).first << std::endl;
+    // nm::map<int, int>::iterator it = m.begin();
+    // it++;
+    // it++;
+    // it++;
+    // it++;
+    std::cout << m.max_size() << std::endl;
 }
