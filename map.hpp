@@ -22,10 +22,11 @@ namespace ft {
 			typedef typename Allocator::pointer													pointer;
 			typedef typename Allocator::const_pointer											const_pointer;
 
-			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>::node_ptr	node_ptr;
+			typedef typename ft::RedBlackTree<value_type, Compare, allocator_type>				Tree;
+			typedef typename Tree::node_ptr														node_ptr;
 
-			typedef ft::LegacyBidirectionalIterator<Node<value_type>, false>					iterator;
-			typedef ft::LegacyBidirectionalIterator<Node<value_type>, true>						const_iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type>, false, Compare>		iterator;
+			typedef ft::LegacyBidirectionalIterator<ft::Node<value_type>, true, Compare>		const_iterator;
 
 			typedef LegacyReverseBidirectionalIterator<iterator>								reverse_iterator;
 			typedef LegacyReverseBidirectionalIterator<const_iterator>							const_reverse_iterator;
@@ -39,21 +40,17 @@ namespace ft {
 					value_compare(Compare c) : comp(c) {}
 			};
 			/* Constructors */
-			map(): _alloc(Allocator()), _comp(Compare()), _size(0)
-			{
-				// _bst.insert(value_type());
-			};
-			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc), _size(0)
-			{
-				// _bst.insert(value_type());
-			};
+			map(): _alloc(Allocator()), _comp(Compare())
+			{};
+			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc)
+			{};
 			map(const map& other): _alloc(other._alloc), _comp(other._comp)
 			{
 				iterator it = other.begin();
-				while (it != NULL)
+				_bst.clear();
+				while (it != other.end())
 				{
 					_bst.insert(*it);
-					_size++;
 					it++;
 				}
 			}
@@ -65,83 +62,113 @@ namespace ft {
 			{
 				_comp = comp;
 				_alloc = alloc;
-				while (first != last)
-				{
-					_bst.insert(*first);
-					first++;
-					_size++;
-				}
+				insert(first, last);
 			}
 
-			iterator insert( iterator hint, const value_type& value )
+			iterator insert ( iterator hint, const value_type& value )
 			{
 				(void)hint;
-				return _bst.insert(value);
+				return iterator(_bst.insert(value), _bst.getEnd());
 			}
 
 			template< class InputIt >
-			void insert( InputIt first, InputIt last )
+			void insert ( InputIt first, InputIt last )
 			{
 				while (first != last)
 				{
-					_bst.insert(*first);
+					this->insert(*first);
 					first++;
 				}
 			}
 
-			ft::pair<iterator, bool>	insert( const value_type& value )
+			ft::pair<iterator, bool>	insert ( const value_type& value )
 			{
 				ft::pair<node_ptr, bool> searchResult = _bst.search_node(value);
 				if (searchResult.second == false)
 				{
-					return (ft::make_pair(_bst.insert(value), true));
+					return (ft::make_pair(iterator(_bst.insert(value), _bst.getEnd()), true));
 				}
-				return ft::make_pair(searchResult.first, false);
+				return ft::make_pair(iterator(searchResult.first, _bst.getEnd()), false);
 			}
 
 			void clear()
 			{
-				_size = 0;
+				_bst.clear();
 			}
 
+			void erase( iterator pos )
+			{
+				node_ptr ptr = pos.base();
+				_bst.deleteNodePtr(ptr, ptr->data);
+			}
+			void erase( iterator first, iterator last )
+			{
+				while (first != last)
+				{
+					erase(first);
+					first++;
+				}
+			}
+			size_type erase( const Key& key )
+			{
+				iterator it = find(key);
+				if (it.base() != _bst.getEnd())
+				{
+					erase(it);
+					return 1;
+				}
+				return 0;
+			}
 
 			// TEMPORARY
 			void print() { _bst.printTree(); };
 
 			allocator_type get_allocator() const { return _alloc; };
-			bool empty() const { return _size == 0; };
-			size_type size() const { return _size; };
-			size_type max_size() const { return _alloc.max_size(); };
+			size_type size() const { return _bst.getSize(); };
+			size_type max_size() const { return _bst.max_size(); };
+			bool empty() const { return size() == 0; };
 
-			iterator begin() { return iterator((_bst.minimum(_bst.getRoot()))); };
-			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot())); };
-			iterator end() { return iterator(_bst.maximum(_bst.getRoot())); };
-			const_iterator end() const { return const_iterator(_bst.maximum(_bst.getRoot())); };
+			iterator begin() { return iterator((_bst.minimum(_bst.getRoot())), _bst.getEnd()); };
+			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot()), _bst.getEnd()); };
+			iterator end() { return iterator(_bst.getEnd(), _bst.getEnd()); };
+			const_iterator end() const { return const_iterator(_bst.getEnd(), _bst.getEnd()); };
 
-			reverse_iterator		rbegin() { return reverse_iterator(_bst.maximum(_bst.getRoot())); };
-			const_reverse_iterator	rbegin() const { return const_reverse_iterator(_bst.maximum(_bst.getRoot())); };
+			reverse_iterator		rbegin() { return reverse_iterator(end()); };
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); };
 			reverse_iterator		rend() { return reverse_iterator(begin()); };
 			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); };
 
 			mapped_type& operator[] (const key_type& k)
 			{
-				typename ft::RedBlackTree<value_type>::node_ptr res = _bst.searchTree(k);
-				if (res->first != k)
-					insert(ft::make_pair(k, mapped_type()));
-				return res->second;
+				iterator tmp = this->find(k);
 
-				// iterator find = searchNode(k);
-                // if (find._M_node == _end)
-                //     find = insert(_root, ft::make_pair(k, mapped_type()));
-                // return find->second;
+				if (tmp.base() == _bst.getEnd())
+					this->insert(ft::make_pair(k, mapped_type()));
+				tmp = this->find(k);
+				return ((*tmp).second);
 			}
 
+			key_compare key_comp() const { return _comp; }
+			value_compare value_comp() const { return value_compare(_comp); }
+
+			iterator find(const key_type& k)
+			{
+				ft::pair<node_ptr, bool> searchResult = _bst.search_node(ft::make_pair(k, T()));
+				return (iterator(searchResult.first, _bst.getEnd()));
+			}
+			const_iterator find (const key_type& k) const
+			{
+				ft::pair<node_ptr, bool> searchResult = _bst.search_node(ft::make_pair(k, T()));
+				return (const_iterator(searchResult.first, _bst.getEnd()));
+			}
+			size_type count( const Key& key ) const
+			{
+				return (_bst.search_node(ft::make_pair(key, T())).second);
+			}
 		private:
-			// RedBlackTree<value_type, Compare, allocator_type>	_bst;
-			RedBlackTree<value_type>						_bst;
-			allocator_type									_alloc;
-			Compare											_comp;
-			size_type										_size;
+			Tree			_bst;
+			allocator_type	_alloc;
+			Compare			_comp;
 
 	};
 }

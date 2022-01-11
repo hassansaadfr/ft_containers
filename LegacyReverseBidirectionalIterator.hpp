@@ -8,10 +8,11 @@
  #include "LegacyBidirectionalIterator.hpp"
 #endif
 
+#include "RedBlackTree.hpp"
 # include "Utils.hpp"
 
 namespace ft {
-	template < class T,	bool B >
+	template <typename T, bool B, class C>
 	class LegacyBidirectionalIterator ;
 
 	template <typename T>
@@ -60,8 +61,6 @@ namespace ft {
 			iterator_type							current;
 	};
 
-	// template <class Iterator>
-	// LegacyReverseBidirectionalIterator<Iterator> operator+(typename LegacyReverseBidirectionalIterator<Iterator>::difference_type n, const LegacyReverseBidirectionalIterator<Iterator>& rev_it) { return (rev_it + n); }
 	template< class Iterator1, class Iterator2 >
 	bool	operator==(const LegacyReverseBidirectionalIterator<Iterator1>& lhs, const LegacyReverseBidirectionalIterator<Iterator2>& rhs) { return (lhs.base() == rhs.base()); };
 	template< class Iterator >

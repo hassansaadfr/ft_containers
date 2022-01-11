@@ -87,13 +87,12 @@ namespace ft {
 		}
 		return result;
 	}
-
-
 	template <class T>
 	struct less : std::binary_function<T, T, bool>
 	{
 		bool operator() (const T& x, const T& y) const { return (x < y); }
 	};
+
 	template<class T1, class T2>
 	struct pair
 	{
@@ -118,6 +117,7 @@ namespace ft {
 			return *this;
 		};
 	};
+
 	template <class T1, class T2>
 	std::ostream & operator<<(std::ostream &o, ft::pair<T1, T2>& rhs)
 	{
@@ -153,6 +153,7 @@ namespace ft {
 	bool operator>=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ) { return !(rhs < lhs); }
 	template< class T1, class T2 >
 	ft::pair<T1,T2> make_pair( T1 t, T2 u ) { return ft::pair<T1, T2>(t, u); };
+
 };
 
 #endif
