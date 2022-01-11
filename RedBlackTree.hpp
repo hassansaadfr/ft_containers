@@ -369,7 +369,7 @@ namespace ft
 			void		clear()
 			{
 				if (root && root != TNULL)
-				destroy(root);
+				    destroy(root);
 				root = TNULL;
 				// _alloc.deallocate(TNULL, 1);
 				_size = 0;
@@ -542,7 +542,7 @@ namespace ft
 
 			void deleteNodePtr(node_ptr pos, value_type data)
 			{
-				deleteNodeHelper(pos, data);
+                deleteNodeHelper(pos, data);
 			}
 			void printTree()
 			{

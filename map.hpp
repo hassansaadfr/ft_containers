@@ -44,16 +44,8 @@ namespace ft {
 			{};
 			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc)
 			{};
-			map(const map& other): _alloc(other._alloc), _comp(other._comp)
-			{
-				iterator it = other.begin();
-				_bst.clear();
-				while (it != other.end())
-				{
-					_bst.insert(*it);
-					it++;
-				}
-			}
+			map(const map& other):  _bst(other._bst), _alloc(other._alloc), _comp(other._comp)
+            {};
 
 			~map() {};
 
@@ -103,11 +95,8 @@ namespace ft {
 			}
 			void erase( iterator first, iterator last )
 			{
-				while (first != last)
-				{
-					erase(first);
-					first++;
-				}
+                while (first != last)
+                    this->erase((*(first++)).first);
 			}
 			size_type erase( const Key& key )
 			{
@@ -165,6 +154,93 @@ namespace ft {
 			{
 				return (_bst.search_node(ft::make_pair(key, T())).second);
 			}
+
+            iterator lower_bound(const key_type& key)
+            {
+                iterator it_begin = begin();
+                iterator it_end = end();
+
+                if (key < it_begin->first)
+                    return begin();
+                else if ((it_end--)->first > key)
+                    return end();
+
+                for (; it_begin != it_end; it_begin++)
+                {
+                    if (!_comp(it_begin->first, key))
+                        return it_begin;
+                }
+                return it_end;
+            }
+
+            const_iterator lower_bound( const Key& key ) const
+            {
+                iterator it_begin = begin();
+                iterator it_end = end();
+
+                if (key < it_begin->first)
+                    return begin();
+                else if ((it_end--)->first > key)
+                    return end();
+
+                for (; it_begin != it_end; it_begin++)
+                {
+                    if (!_comp(it_begin->first, key))
+                        return it_begin;
+                }
+                return it_end;
+            }
+
+            iterator upper_bound(const key_type& key)
+            {
+                iterator it_begin = begin();
+                iterator it_end = end();
+
+                if (key < it_begin->first)
+                    return begin();
+                else if ((it_end--)->first > key)
+                    return end();
+
+                for (; it_begin != it_end; it_begin++)
+                {
+                    if (!_comp(it_begin->first, key) && !(!_comp(key, it_begin->first) && !_comp(it_begin->first, key)))
+                        return it_begin++;
+                }
+                return it_end;
+            }
+
+            const_iterator upper_bound(const key_type& key) const
+            {
+                iterator it_begin = begin();
+                iterator it_end = end();
+
+                if (key < it_begin->first)
+                    return begin();
+                else if ((it_end--)->first > key)
+                    return end();
+
+                for (; it_begin != it_end; it_begin++)
+                {
+                    if (!_comp(it_begin->first, key) && !(!_comp(key, it_begin->first) && !_comp(it_begin->first, key)))
+                        return it_begin++;
+                }
+                return it_end;
+            }
+
+            ft::pair<iterator,iterator> equal_range( const Key& key )
+            {
+                return ft::make_pair(lower_bound(key), upper_bound(key));
+            }
+
+            ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
+            {
+                return ft::make_pair(lower_bound(key), upper_bound(key));
+            }
+
+
+
+
+
 		private:
 			Tree			_bst;
 			allocator_type	_alloc;

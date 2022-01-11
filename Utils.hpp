@@ -125,6 +125,14 @@ namespace ft {
 		return o;
 	}
 
+
+    template <class T1, class T2>
+    std::ostream & operator<<(std::ostream &o, const ft::pair<T1, T2>& rhs)
+    {
+        o << "[" << rhs.first << ":" << rhs.second << "]";
+        return o;
+    }
+
 	template< class T1, class T2 >
 	bool operator==( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs ) { return lhs.first == rhs.first && lhs.second == rhs.second; }
 
