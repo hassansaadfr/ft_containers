@@ -9,17 +9,17 @@ namespace nm = ft;
 
 int main()
 {
-
     nm::map<int, int> m;
     for (size_t i = 1; i < 10; i++)
     {
         m.insert(ft::make_pair(i,i));
     }
-    std::map<int> z;
+    m.print();
     nm::map<int, int>::iterator it = m.begin();
-    // it++;
-    // it++;
     it++;
-    std::cout << m.max_size() << std::endl;
-    m.clear();
+    std::cout << *it << std::endl;
+    m.erase(it);
+    // it++;
+    m.print();
+
 }

@@ -96,6 +96,31 @@ namespace ft {
 				_bst.clear();
 			}
 
+			void erase( iterator pos )
+			{
+				node_ptr ptr = pos.base();
+				_bst.deleteNodePtr(ptr, ptr->data);
+			}
+			void erase( iterator first, iterator last )
+			{
+				while (first != last)
+				{
+					erase(first);
+					first++;
+				}
+			}
+			size_type erase( const Key& key )
+			{
+				iterator it = find(key);
+				if (it.base() != _bst.getEnd())
+				{
+					erase(it);
+					return 1;
+				}
+				// return it == NULL ? 1 : 0;
+				return 0;
+			}
+
 			// TEMPORARY
 			void print() { _bst.printTree(); };
 

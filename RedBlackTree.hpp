@@ -202,7 +202,7 @@ namespace ft
 					return;
 				}
 
-                this->_size--;
+				this->_size--;
 
 				if (z->left == TNULL && z->right == TNULL && z == root)
 				{
@@ -540,6 +540,10 @@ namespace ft
 				deleteNodeHelper(this->root, data);
 			}
 
+			void deleteNodePtr(node_ptr pos, value_type data)
+			{
+				deleteNodeHelper(pos, data);
+			}
 			void printTree()
 			{
 				if (root)
