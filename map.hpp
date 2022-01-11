@@ -117,7 +117,6 @@ namespace ft {
 					erase(it);
 					return 1;
 				}
-				// return it == NULL ? 1 : 0;
 				return 0;
 			}
 
