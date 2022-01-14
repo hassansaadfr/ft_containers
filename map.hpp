@@ -90,8 +90,7 @@ namespace ft {
 
 			void erase( iterator pos )
 			{
-				node_ptr ptr = pos.base();
-				_bst.deleteNodePtr(ptr, ptr->data);
+				_bst.deleteNode(*pos);
 			}
 			void erase( iterator first, iterator last )
 			{
@@ -135,7 +134,11 @@ namespace ft {
 
 			iterator begin() { return iterator((_bst.minimum(_bst.getRoot())), _bst.getEnd()); };
 			const_iterator begin() const { return const_iterator(_bst.minimum(_bst.getRoot()), _bst.getEnd()); };
-			iterator end() { return iterator(_bst.getEnd(), _bst.getEnd()); };
+			iterator end()
+			{
+				_bst.getEnd()->parent = _bst.maximum(_bst.getRoot());
+				return iterator(_bst.getEnd(), _bst.getEnd());
+			};
 			const_iterator end() const { return const_iterator(_bst.getEnd(), _bst.getEnd()); };
 
 			reverse_iterator		rbegin() { return reverse_iterator(end()); };

@@ -196,12 +196,12 @@ namespace ft
 						node = node->left;
 					}
 				}
-				TNULL->parent = maximum(root);
 				if (z == TNULL)
 				{
 					return;
 				}
 
+				TNULL->parent = maximum(root);
 				this->_size--;
 
 				if (z->left == TNULL && z->right == TNULL && z == root)
@@ -379,7 +379,7 @@ namespace ft
 			{
 				if (this == &src)
 					return *this;
-
+				clear();
 				node_ptr min = src.minimum(src.getRoot());
 				while (min != src.getEnd())
 				{
@@ -558,6 +558,8 @@ namespace ft
             }
 
             node_ptr maximum(node_ptr node) const {
+				if (node == TNULL)
+					return node;
                 while (node->right != TNULL)
                     node = node->right;
                 return node;

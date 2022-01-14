@@ -15,16 +15,12 @@ int main()
     for (int i = 1; i <= 10; i++)
         m.insert(nm::make_pair(i, i));
 
+    nm::map<int, int>::iterator it = m.begin(), ite = m.end();
+    nm::map<int, int> m_copy(it, --(--ite));
 
-    nm::map<int, int>::iterator it = m.end();
-
-    std::cout << *((--(--it))--) << std::endl;
-    std::cout << *it-- << std::endl;
-    std::cout << *it-- << std::endl;
-    std::cout << *it-- << std::endl;
-    std::cout << *it-- << std::endl;
-    std::cout << *it-- << std::endl;
-
+    std::cout << m.size() << std::endl;
+    std::cout << "-----------" << std::endl;
+    std::cout << m_copy.size() << std::endl;
 
 
 }

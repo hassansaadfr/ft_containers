@@ -22,7 +22,7 @@ namespace ft {
 			typedef typename T::node_ptr																				node_ptr;
 			typedef typename ft::is_constant<is_constant, const typename T::value_type, typename T::value_type >::type	pair_type;
 			typedef typename ft::is_constant<is_constant, const typename T::node_ptr, typename T::node_ptr >::type		pointer;
-			typedef typename ft::is_constant<is_constant, const typename T::node_type &, typename T::node_type &>::type							reference;
+			typedef typename ft::is_constant<is_constant, const typename T::node_type &, typename T::node_type &>::type	reference;
 			typedef ft::bidirectional_iterator_tag																		iterator_category;
 
 			/* Constructor */
@@ -87,19 +87,19 @@ namespace ft {
 			node_ptr	_last;
 			Compare		_comp;
 
-			node_ptr minimum(node_ptr node) const {
+			pointer minimum(node_ptr node) const {
                 while (node && node->left != _last)
                     node = node->left;
                 return !node ? _last : node;
             }
 
-            node_ptr maximum(node_ptr node) const {
+            pointer maximum(node_ptr node) const {
                 while (node && node->right != _last)
                     node = node->right;
                 return !node ? _last : node;
             }
 
-            node_ptr successor(node_ptr x) const {
+            pointer successor(node_ptr x) const {
                 if (x == _last)
                     return (minimum(x));
                 if (x->right != _last) {
@@ -114,7 +114,7 @@ namespace ft {
                 return !y ? _last : y ;
             }
 
-            node_ptr predecessor(node_ptr x) const {
+            pointer predecessor(node_ptr x) const {
                 if (x == _last)
                     return (maximum(x));
 
