@@ -389,6 +389,22 @@ namespace ft
 				return *this;
 			};
 
+			void swap(RedBlackTree& x)
+			{
+				if (&x == this)
+					return ;
+
+				node_ptr root_tmp = this->root;
+				node_ptr end_tmp = this->TNULL;
+				size_t tmp_size = this->_size;
+				this->TNULL = x.TNULL;
+				this->root = x.root;
+				this->_size = x._size;
+				x.TNULL = end_tmp;
+				x.root = root_tmp;
+				x._size = tmp_size;
+			}
+
 			void destroy(node_ptr x)
 			{
 				if (x && x->left != TNULL)

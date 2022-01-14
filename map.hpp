@@ -44,9 +44,10 @@ namespace ft {
 			{};
 			explicit map(const Compare& comp, const Allocator& alloc = Allocator()): _comp(comp), _alloc(alloc)
 			{};
-			map(const map& other):  _bst(other._bst), _alloc(other._alloc), _comp(other._comp)
-            {};
-
+			map(const map& x): _alloc(x._alloc), _comp(x._comp)
+			{
+				this->insert(x.begin(), x.end());
+			}
 			~map() {};
 
 			template< class InputIt >
@@ -111,22 +112,7 @@ namespace ft {
 			// TEMPORARY
 			void print() { _bst.printTree(); };
 
-			void swap( map& x )
-			{
-				if (this == &x)
-					return;
-				Tree tmp = _bst;
-				key_compare		_comp_tmp = _comp;
-				allocator_type	_alloc_tmp = _alloc;
-
-				_bst = x._bst;
-				_comp = x._comp;
-				_alloc = x._alloc;
-				x._bst = tmp;
-				x._comp = _comp_tmp;
-				x._alloc = _alloc_tmp;
-
-			}
+			void swap (map& x) { _bst.swap(x._bst); }
 			allocator_type get_allocator() const { return _alloc; };
 			size_type size() const { return _bst.getSize(); };
 			size_type max_size() const { return _bst.max_size(); };
@@ -174,76 +160,60 @@ namespace ft {
 				return (_bst.search_node(ft::make_pair(key, T())).second);
 			}
 
-            iterator lower_bound(const key_type& key)
+            iterator lower_bound(const key_type& k)
             {
-                iterator it_begin = begin();
-                iterator it_end = end();
+				iterator beg = this->begin();
+				iterator end = this->end();
 
-                if (key < it_begin->first)
-                    return begin();
-                else if ((it_end--)->first > key)
-                    return end();
-
-                for (; it_begin != it_end; it_begin++)
-                {
-                    if (!_comp(it_begin->first, key))
-                        return it_begin;
-                }
-                return it_end;
+				while (beg != end)
+				{
+					if (_comp((*beg).first, k) == false)
+						break;
+					beg++;
+				}
+				return (beg);
             }
 
-            const_iterator lower_bound( const Key& key ) const
+            const_iterator lower_bound( const Key& k ) const
             {
-                iterator it_begin = begin();
-                iterator it_end = end();
+				const_iterator beg = this->begin();
+				const_iterator end = this->end();
 
-                if (key < it_begin->first)
-                    return begin();
-                else if ((it_end--)->first > key)
-                    return end();
-
-                for (; it_begin != it_end; it_begin++)
-                {
-                    if (!_comp(it_begin->first, key))
-                        return it_begin;
-                }
-                return it_end;
+				while (beg != end)
+				{
+					if (_comp((*beg).first, k) == false)
+						break;
+					beg++;
+				}
+				return (beg);
             }
 
-            iterator upper_bound(const key_type& key)
-            {
-                iterator it_begin = begin();
-                iterator it_end = end();
+			iterator upper_bound (const key_type& k)
+			{
+				iterator beg = this->begin();
+				iterator end = this->end();
 
-                if (key < it_begin->first)
-                    return begin();
-                else if ((it_end--)->first > key)
-                    return end();
-
-                for (; it_begin != it_end; it_begin++)
-                {
-                    if (!_comp(it_begin->first, key) && !(!_comp(key, it_begin->first) && !_comp(it_begin->first, key)))
-                        return it_begin++;
-                }
-                return it_end;
-            }
+				while (beg != end)
+				{
+					if (_comp(k, (*beg).first))
+						break;
+					beg++;
+				}
+				return (beg);
+			}
 
             const_iterator upper_bound(const key_type& key) const
             {
-                iterator it_begin = begin();
-                iterator it_end = end();
+				const_iterator beg = this->begin();
+				const_iterator end = this->end();
 
-                if (key < it_begin->first)
-                    return begin();
-                else if ((it_end--)->first > key)
-                    return end();
-
-                for (; it_begin != it_end; it_begin++)
-                {
-                    if (!_comp(it_begin->first, key) && !(!_comp(key, it_begin->first) && !_comp(it_begin->first, key)))
-                        return it_begin++;
-                }
-                return it_end;
+				while (beg != end)
+				{
+					if (_comp(key, (*beg).first))
+						break;
+					beg++;
+				}
+				return (beg);
             }
 
             ft::pair<iterator,iterator> equal_range( const Key& key )
