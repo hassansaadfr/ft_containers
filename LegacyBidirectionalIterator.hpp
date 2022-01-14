@@ -22,12 +22,12 @@ namespace ft {
 			typedef typename T::node_ptr																				node_ptr;
 			typedef typename ft::is_constant<is_constant, const typename T::value_type, typename T::value_type >::type	pair_type;
 			typedef typename ft::is_constant<is_constant, const typename T::node_ptr, typename T::node_ptr >::type		pointer;
-			typedef typename ft::is_constant<is_constant, const typename T::node_type &, typename T::node_type &>::type	reference;
+			typedef typename ft::is_constant<is_constant, const pair_type &, pair_type &>::type							reference;
 			typedef ft::bidirectional_iterator_tag																		iterator_category;
 
 			/* Constructor */
 			LegacyBidirectionalIterator(const Compare& comp = Compare()): _ptr(), _last(), _comp(comp) {}
-			LegacyBidirectionalIterator(T* ptr, T* last, const Compare& comp = Compare())
+			LegacyBidirectionalIterator(pointer ptr, pointer last, const Compare& comp = Compare())
 			:
 				_ptr(ptr),
 				_last(last),
@@ -76,7 +76,7 @@ namespace ft {
 			}
 			LegacyBidirectionalIterator		operator++(int) { LegacyBidirectionalIterator	old = *this; operator++(); return old; }
 			LegacyBidirectionalIterator		operator--(int) { LegacyBidirectionalIterator	old = *this; operator--(); return old; }
-			pair_type&						operator*(void) const { return (_ptr->data); }
+			reference						operator*(void) const { return (_ptr->data); }
 			pair_type*						operator->(void) const { return &(operator*()); }
 			/* Offset dereference operator */
 			reference						operator[](difference_type rhs) { return *(_ptr + rhs); }
