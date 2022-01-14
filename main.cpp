@@ -16,7 +16,15 @@ int main()
         m.insert(nm::make_pair(i, i));
 
 
-    nm::map<int, int> dup (m);
+    nm::map<int, int>::iterator it = m.end();
+
+    std::cout << *((--(--it))--) << std::endl;
+    std::cout << *it-- << std::endl;
+    std::cout << *it-- << std::endl;
+    std::cout << *it-- << std::endl;
+    std::cout << *it-- << std::endl;
+    std::cout << *it-- << std::endl;
+
 
 
 }

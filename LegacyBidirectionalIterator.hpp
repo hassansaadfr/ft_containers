@@ -64,7 +64,16 @@ namespace ft {
 				_ptr = successor(_ptr);
 				return *this;
 			}
-			LegacyBidirectionalIterator&	operator--(void) { _ptr = predecessor(_ptr); return *this; }
+			LegacyBidirectionalIterator&	operator--(void)
+			{
+				if (_ptr == _last && _ptr != _ptr->parent)
+				{
+					_ptr = _ptr->parent;
+				}
+				else
+					_ptr = predecessor(_ptr);
+				return *this;
+			}
 			LegacyBidirectionalIterator		operator++(int) { LegacyBidirectionalIterator	old = *this; operator++(); return old; }
 			LegacyBidirectionalIterator		operator--(int) { LegacyBidirectionalIterator	old = *this; operator--(); return old; }
 			pair_type&						operator*(void) const { return (_ptr->data); }

@@ -45,8 +45,8 @@ namespace ft {
 			LegacyReverseBidirectionalIterator		operator--(int) { LegacyReverseBidirectionalIterator old = *this; operator--(); return old; }
 			LegacyReverseBidirectionalIterator&		operator++(void) { --current; return *this; }
 			LegacyReverseBidirectionalIterator		operator++(int) { LegacyReverseBidirectionalIterator old = *this; operator++(); return old; }
-			reference								operator*(void) const { iterator_type tmp = current; return *(--tmp); }
-			pointer									operator->(void) const { return &(operator*()); }
+			typename T::pair_type&								operator*(void) const { iterator_type tmp = current; return *(--tmp); }
+			typename T::pair_type*									operator->(void) const { return &(operator*()); }
 			/* Arithmetic operations */
 			// LegacyReverseBidirectionalIterator		operator+(difference_type rhs) const { return LegacyReverseBidirectionalIterator(current - rhs); }
 			// LegacyReverseBidirectionalIterator		operator-(difference_type rhs) const { return LegacyReverseBidirectionalIterator(base() + rhs); }

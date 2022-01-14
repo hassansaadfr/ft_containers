@@ -196,7 +196,7 @@ namespace ft
 						node = node->left;
 					}
 				}
-
+				TNULL->parent = maximum(root);
 				if (z == TNULL)
 				{
 					return;
@@ -515,6 +515,7 @@ namespace ft
 				{
 					y->right = node;
 				}
+				this->TNULL->parent = maximum(this->root);
 
 				if (node->parent == NULL)
 				{
