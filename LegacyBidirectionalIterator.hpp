@@ -36,8 +36,7 @@ namespace ft {
 			/* Destructor */
 			~LegacyBidirectionalIterator(void) {};
 			/* Copy constructor */
-			template < bool is_const >
-			LegacyBidirectionalIterator(const LegacyBidirectionalIterator<T, is_const, Compare> & rhs): _ptr(rhs.base()), _last(rhs.end()), _comp(Compare()) {}
+			LegacyBidirectionalIterator(const LegacyBidirectionalIterator<T, false, Compare> & rhs): _ptr(rhs.base()), _last(rhs.end()), _comp(Compare()) {}
 
 			/* Copy Assignation constructor */
 			LegacyBidirectionalIterator&	operator=(LegacyBidirectionalIterator const &rhs)
